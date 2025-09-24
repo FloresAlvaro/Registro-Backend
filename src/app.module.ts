@@ -6,6 +6,9 @@ import { PrismaModule } from './prisma/prisma.module';
 import { RolesModule } from './common/roles/roles.module';
 import { GradesModule } from './common/grades/grades.module';
 import { SubjectsModule } from './common/subjects/subjects.module';
+import { UsersModule } from './common/users/users.module';
+import { StudentsModule } from './common/students/students.module';
+import { TeachersModule } from './common/teachers/teachers.module';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { SubjectsModule } from './common/subjects/subjects.module';
     RolesModule,
     GradesModule,
     SubjectsModule,
+    UsersModule,
+    StudentsModule,
+    TeachersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

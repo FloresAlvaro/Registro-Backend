@@ -15,6 +15,9 @@ model Role {
   roleName   String  @db.VarChar(255)
   roleStatus Boolean @default(true)
 
+  // Relations
+  users User[]
+
   @@map("Role")
 }
 
@@ -23,6 +26,9 @@ model Grade {
   gradeLevel       String  @db.VarChar(255)
   gradeDescription String  @db.VarChar(255)
   gradeStatus      Boolean @default(true)
+
+  // Relations
+  students Student[]
 
   @@map("Grade")
 }
@@ -34,4 +40,54 @@ model Subject {
   subjectStatus      Boolean @default(true)
 
   @@map("Subject")
+}
+
+model User {
+  userId               Int       @id @default(autoincrement())
+  userFirstName        String    @db.VarChar(255)
+  userSecondName       String?   @db.VarChar(255)
+  userFirstLastName    String    @db.VarChar(255)
+  userSecondLastName   String?   @db.VarChar(255)
+  userEmail            String    @unique @db.VarChar(255)
+  userPassword         String    @db.VarChar(255)
+  userDateOfBirth      DateTime  @db.Date
+  userAddress          String?   @db.Text
+  userPhoneNumber      String?   @db.VarChar(20)
+  userRoleId           Int
+  userStatus           Boolean   @default(true)
+  createdAt            DateTime? @default(now()) @db.Timestamp
+  updatedAt            DateTime? @default(now()) @updatedAt @db.Timestamp
+
+  // Relations
+  role    Role     @relation(fields: [userRoleId], references: [roleId])
+  student Student?
+  teacher Teacher?
+
+  @@index([userRoleId], map: "user_userroleid_index")
+  @@map("User")
+}
+
+model Student {
+  studentId Int @id @default(autoincrement())
+  userId    Int @unique
+  gradeId   Int
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [userId])
+  grade Grade @relation(fields: [gradeId], references: [gradeId])
+
+  @@index([userId], map: "student_userid_index")
+  @@index([gradeId], map: "student_gradeid_index")
+  @@map("Student")
+}
+
+model Teacher {
+  teacherId Int @id @default(autoincrement())
+  userId    Int @unique
+
+  // Relations
+  user User @relation(fields: [userId], references: [userId])
+
+  @@index([userId], map: "teacher_userid_index")
+  @@map("Teacher")
 }
