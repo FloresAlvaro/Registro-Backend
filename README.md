@@ -1,98 +1,349 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Report Card Backend API<p align="center">
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+<a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+
+A comprehensive backend system for managing educational report cards, built with NestJS, Prisma, and PostgreSQL. This API provides endpoints for managing roles, grades, and subjects with full CRUD operations and status filtering.</p>
+
+## Features[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+- **Role Management**: Complete CRUD operations for user roles
+
+- **Grade Management**: Comprehensive grade level management <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+
+- **Subject Management**: Full subject administration <p align="center">
+
+- **Status Filtering**: Filter entities by active, inactive, or all statuses<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+
+- **Swagger Documentation**: Interactive API documentation<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+
+- **Database ORM**: Prisma for type-safe database operations<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+
+- **Validation**: Built-in request validation with class-validator<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+
+- **TypeScript**: Full TypeScript support for type safety<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+
 <a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+
+## Technology Stack<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+
+<a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+
+- **Framework**: NestJS <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+
+- **Database**: PostgreSQL <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+
+- **ORM**: Prisma</p>
+
+- **Documentation**: Swagger/OpenAPI <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+
+- **Validation**: class-validator & class-transformer [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+
+- **Code Quality**: ESLint & Prettier
 
 ## Description
 
+## API Endpoints
+
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+### Roles (`/roles`)
 
-```bash
-$ npm install
-```
+- `GET /roles` - Get all roles with optional status filtering## Project setup
+  - Query parameter: `status` (active | inactive | all)
 
-## Compile and run the project
+- `GET /roles/:id` - Get role by ID```bash
 
-```bash
-# development
-$ npm run start
+- `POST /roles` - Create new role$ npm install
 
-# watch mode
-$ npm run start:dev
+- `PATCH /roles/:id` - Update role```
 
-# production mode
+- `DELETE /roles/:id` - Delete role
+
+- `PATCH /roles/:id/toggle-status` - Toggle role status## Compile and run the project
+
+### Grades (`/grades`)```bash
+
+- `GET /grades` - Get all grades with optional status filtering# development
+  - Query parameter: `status` (active | inactive | all)$ npm run start
+
+- `GET /grades/:id` - Get grade by ID
+
+- `POST /grades` - Create new grade# watch mode
+
+- `PATCH /grades/:id` - Update grade$ npm run start:dev
+
+- `DELETE /grades/:id` - Delete grade
+
+- `PATCH /grades/:id/toggle-status` - Toggle grade status# production mode
+
 $ npm run start:prod
-```
 
-## Run tests
+### Subjects (`/subjects`)```
 
-```bash
-# unit tests
-$ npm run test
+- `GET /subjects` - Get all subjects with optional status filtering
+  - Query parameter: `status` (active | inactive | all)## Run tests
+
+- `GET /subjects/:id` - Get subject by ID
+
+- `POST /subjects` - Create new subject```bash
+
+- `PATCH /subjects/:id` - Update subject# unit tests
+
+- `DELETE /subjects/:id` - Delete subject$ npm run test
+
+- `PATCH /subjects/:id/toggle-status` - Toggle subject status
 
 # e2e tests
-$ npm run test:e2e
 
-# test coverage
+## Database Schema$ npm run test:e2e
+
+The application uses the following PostgreSQL tables:# test coverage
+
 $ npm run test:cov
-```
 
-## Deployment
+`sql`
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+CREATE TABLE "Role"(
+
+    "roleId" INT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,## Deployment
+
+    "roleName" VARCHAR(255) NOT NULL,
+
+    "roleStatus" BOOLEAN NOT NULL DEFAULT trueWhen you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+
+);
 
 If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+CREATE TABLE "Grade"(
+
+    "gradeId" INT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,```bash
+
+    "gradeLevel" VARCHAR(255) NOT NULL,$ npm install -g @nestjs/mau
+
+    "gradeDescription" VARCHAR(255) NOT NULL,$ mau deploy
+
+    "gradeStatus" BOOLEAN NOT NULL DEFAULT true```
+
+);
 
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-## Resources
+CREATE TABLE "Subject"(
 
-Check out a few resources that may come in handy when working with NestJS:
+    "subjectID" INT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,## Resources
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+    "subjectName" VARCHAR(255) NOT NULL,
+
+    "subjectDescription" VARCHAR(255) NOT NULL,Check out a few resources that may come in handy when working with NestJS:
+
+    "subjectStatus" BOOLEAN NOT NULL DEFAULT true
+
+);- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+
+````- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+
 - To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+
+## Setup Instructions- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+
 - Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+
+### Prerequisites- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+
 - To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-## Support
+- Node.js (v16 or higher)- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- PostgreSQL database
 
-## Stay in touch
+- npm or yarn## Support
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+
+### InstallationNest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+
+
+1. **Clone the repository**## Stay in touch
+
+   ```bash
+
+   git clone <repository-url>- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+
+   cd backend-report-card- Website - [https://nestjs.com](https://nestjs.com/)
+
+   ```- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+
+
+2. **Install dependencies**## License
+
+   ```bash
+
+   npm installNest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+````
+
+3. **Environment Configuration**
+
+   Create a `.env` file in the root directory:
+
+   ```env
+   DATABASE_URL="postgresql://username:password@localhost:5432/report_card_db?schema=public"
+   PORT=3000
+   ```
+
+4. **Database Setup**
+
+   Generate Prisma client:
+
+   ```bash
+   npx prisma generate
+   ```
+
+   Run database migrations:
+
+   ```bash
+   npx prisma db push
+   ```
+
+### Running the Application
+
+```bash
+# Development mode
+npm run start:dev
+
+# Production mode
+npm run start:prod
+
+# Build the application
+npm run build
+```
+
+The API will be available at `http://localhost:3000`
+
+### API Documentation
+
+Once the application is running, you can access the interactive Swagger documentation at:
+
+```
+http://localhost:3000/api
+```
+
+### Code Quality
+
+```bash
+# Format code
+npm run format
+
+# Lint code
+npm run lint
+
+# Run tests
+npm run test
+```
+
+## Data Transfer Objects (DTOs)
+
+### CreateRoleDto
+
+```typescript
+{
+  roleName: string;      // Required, 1-255 characters
+  roleStatus?: boolean;  // Optional, defaults to true
+}
+```
+
+### CreateGradeDto
+
+```typescript
+{
+  gradeLevel: string;       // Required, 1-255 characters
+  gradeDescription: string; // Required, 1-255 characters
+  gradeStatus?: boolean;    // Optional, defaults to true
+}
+```
+
+### CreateSubjectDto
+
+```typescript
+{
+  subjectName: string;        // Required, 1-255 characters
+  subjectDescription: string; // Required, 1-255 characters
+  subjectStatus?: boolean;    // Optional, defaults to true
+}
+```
+
+## Response Examples
+
+### Get All Roles (with status filter)
+
+```bash
+GET /roles?status=active
+```
+
+Response:
+
+```json
+[
+  {
+    "roleId": 1,
+    "roleName": "Administrator",
+    "roleStatus": true
+  },
+  {
+    "roleId": 2,
+    "roleName": "Teacher",
+    "roleStatus": true
+  }
+]
+```
+
+### Create Role
+
+```bash
+POST /roles
+Content-Type: application/json
+
+{
+  "roleName": "Student",
+  "roleStatus": true
+}
+```
+
+Response:
+
+```json
+{
+  "roleId": 3,
+  "roleName": "Student",
+  "roleStatus": true
+}
+```
+
+## Error Handling
+
+The API returns appropriate HTTP status codes and error messages:
+
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request (validation errors)
+- `404` - Not Found
+- `500` - Internal Server Error
+
+Error response format:
+
+```json
+{
+  "statusCode": 400,
+  "message": ["roleName should not be empty"],
+  "error": "Bad Request"
+}
+```
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License.

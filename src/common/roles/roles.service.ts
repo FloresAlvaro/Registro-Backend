@@ -1,26 +1,70 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { Role } from './entities/role.entity';
 
 @Injectable()
 export class RolesService {
-  create(createRoleDto: CreateRoleDto) {
-    return 'This action adds a new role';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createRoleDto: CreateRoleDto): Promise<Role> {
+    return this.prisma.role.create({
+      data: createRoleDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all roles`;
+  async findAll(status?: 'active' | 'inactive' | 'all'): Promise<Role[]> {
+    let where = {};
+
+    if (status === 'active') {
+      where = { roleStatus: true };
+    } else if (status === 'inactive') {
+      where = { roleStatus: false };
+    }
+    // For 'all' or undefined, no where condition (returns all records)
+
+    return this.prisma.role.findMany({
+      where,
+      orderBy: { roleId: 'asc' },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  async findOne(id: number): Promise<Role> {
+    const role = await this.prisma.role.findUnique({
+      where: { roleId: id },
+    });
+
+    if (!role) {
+      throw new NotFoundException(`Role with ID ${id} not found`);
+    }
+
+    return role;
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+  async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Role> {
+    await this.findOne(id); // This will throw NotFoundException if not found
+
+    return this.prisma.role.update({
+      where: { roleId: id },
+      data: updateRoleDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  async remove(id: number): Promise<Role> {
+    await this.findOne(id); // This will throw NotFoundException if not found
+
+    return this.prisma.role.delete({
+      where: { roleId: id },
+    });
+  }
+
+  async toggleStatus(id: number): Promise<Role> {
+    const role = await this.findOne(id);
+
+    return this.prisma.role.update({
+      where: { roleId: id },
+      data: { roleStatus: !role.roleStatus },
+    });
   }
 }

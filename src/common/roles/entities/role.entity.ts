@@ -1,1 +1,5 @@
-export class Role {}
+export class Role {
+  roleId: number;
+  roleName: string;
+  roleStatus: boolean;
+}
