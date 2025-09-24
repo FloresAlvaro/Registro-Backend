@@ -9,6 +9,11 @@ import { SubjectsModule } from './common/subjects/subjects.module';
 import { UsersModule } from './common/users/users.module';
 import { StudentsModule } from './common/students/students.module';
 import { TeachersModule } from './common/teachers/teachers.module';
+import { GradeRecordsModule } from './common/grade-records/grade-records.module';
+import { TeacherGradesModule } from './common/teacher-grades/teacher-grades.module';
+import { GradeSubjectsModule } from './common/grade-subjects/grade-subjects.module';
+import { TeacherSubjectsModule } from './common/teacher-subjects/teacher-subjects.module';
+import { StudentTeacherSubjectsModule } from './common/student-teacher-subjects/student-teacher-subjects.module';
 
 @Module({
   imports: [
@@ -22,6 +27,11 @@ import { TeachersModule } from './common/teachers/teachers.module';
     UsersModule,
     StudentsModule,
     TeachersModule,
+    GradeRecordsModule,
+    TeacherGradesModule,
+    GradeSubjectsModule,
+    TeacherSubjectsModule,
+    StudentTeacherSubjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

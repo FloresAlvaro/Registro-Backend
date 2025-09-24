@@ -28,7 +28,11 @@ model Grade {
   gradeStatus      Boolean @default(true)
 
   // Relations
-  students Student[]
+  students              Student[]
+  teacherGrades         TeacherGrade[]
+  gradeSubjects         GradeSubject[]
+  gradeRecords          GradeRecord[]
+  studentTeacherSubject StudentTeacherSubject[]
 
   @@map("Grade")
 }
@@ -38,6 +42,12 @@ model Subject {
   subjectName        String  @db.VarChar(255)
   subjectDescription String  @db.VarChar(255)
   subjectStatus      Boolean @default(true)
+
+  // Relations
+  gradeSubjects         GradeSubject[]
+  teacherSubjects       TeacherSubject[]
+  gradeRecords          GradeRecord[]
+  studentTeacherSubject StudentTeacherSubject[]
 
   @@map("Subject")
 }
@@ -73,8 +83,10 @@ model Student {
   gradeId   Int
 
   // Relations
-  user  User  @relation(fields: [userId], references: [userId])
-  grade Grade @relation(fields: [gradeId], references: [gradeId])
+  user                  User                    @relation(fields: [userId], references: [userId])
+  grade                 Grade                   @relation(fields: [gradeId], references: [gradeId])
+  gradeRecords          GradeRecord[]
+  studentTeacherSubject StudentTeacherSubject[]
 
   @@index([userId], map: "student_userid_index")
   @@index([gradeId], map: "student_gradeid_index")
@@ -86,8 +98,106 @@ model Teacher {
   userId    Int @unique
 
   // Relations
-  user User @relation(fields: [userId], references: [userId])
+  user                  User                    @relation(fields: [userId], references: [userId])
+  teacherGrades         TeacherGrade[]
+  teacherSubjects       TeacherSubject[]
+  studentTeacherSubject StudentTeacherSubject[]
 
   @@index([userId], map: "teacher_userid_index")
   @@map("Teacher")
+}
+
+model TeacherGrade {
+  teacherGradeId Int @id @default(autoincrement())
+  teacherId      Int
+  gradeId        Int
+
+  // Relations
+  teacher Teacher @relation(fields: [teacherId], references: [teacherId])
+  grade   Grade   @relation(fields: [gradeId], references: [gradeId])
+
+  @@unique([teacherId, gradeId])
+  @@index([teacherId], map: "teachergrade_teacherid_index")
+  @@index([gradeId], map: "teachergrade_gradeid_index")
+  @@map("TeacherGrade")
+}
+
+model GradeSubject {
+  gradeSubjectId Int @id @default(autoincrement())
+  gradeId        Int
+  subjectId      Int
+
+  // Relations
+  grade   Grade   @relation(fields: [gradeId], references: [gradeId])
+  subject Subject @relation(fields: [subjectId], references: [subjectID])
+
+  @@unique([gradeId, subjectId])
+  @@index([gradeId], map: "gradesubject_gradeid_index")
+  @@index([subjectId], map: "gradesubject_subjectid_index")
+  @@map("GradeSubject")
+}
+
+model TeacherSubject {
+  teacherSubjectId Int @id @default(autoincrement())
+  teacherId        Int
+  subjectId        Int
+
+  // Relations
+  teacher Teacher @relation(fields: [teacherId], references: [teacherId])
+  subject Subject @relation(fields: [subjectId], references: [subjectID])
+
+  @@unique([teacherId, subjectId])
+  @@index([teacherId], map: "teachersubject_teacherid_index")
+  @@index([subjectId], map: "teachersubject_subjectid_index")
+  @@map("TeacherSubject")
+}
+
+model GradeRecord {
+  gradeRecordId    Int       @id @default(autoincrement())
+  studentId        Int
+  subjectId        Int
+  gradeId          Int
+  score            Decimal   @db.Decimal(5, 2)
+  maxScore         Decimal   @default(100.00) @db.Decimal(5, 2)
+  gradeType        String    @db.VarChar(50)
+  evaluationDate   DateTime  @default(now()) @db.Date
+  academicPeriod   String    @db.VarChar(50)
+  comments         String?   @db.Text
+  recordStatus     Boolean   @default(true)
+  createdAt        DateTime? @default(now()) @db.Timestamp
+  updatedAt        DateTime? @default(now()) @updatedAt @db.Timestamp
+
+  // Relations
+  student Student @relation(fields: [studentId], references: [studentId])
+  subject Subject @relation(fields: [subjectId], references: [subjectID])
+  grade   Grade   @relation(fields: [gradeId], references: [gradeId])
+
+  @@index([studentId], map: "graderecord_studentid_index")
+  @@index([subjectId], map: "graderecord_subjectid_index")
+  @@index([gradeId], map: "graderecord_gradeid_index")
+  @@map("Grade_Record")
+}
+
+model StudentTeacherSubject {
+  studentTeacherSubjectId Int      @id @default(autoincrement())
+  studentId               Int
+  teacherId               Int
+  subjectId               Int
+  gradeId                 Int
+  academicPeriod          String   @db.VarChar(50)
+  assignmentDate          DateTime @default(now()) @db.Date
+  isActive                Boolean  @default(true)
+
+  // Relations
+  student Student @relation(fields: [studentId], references: [studentId])
+  teacher Teacher @relation(fields: [teacherId], references: [teacherId])
+  subject Subject @relation(fields: [subjectId], references: [subjectID])
+  grade   Grade   @relation(fields: [gradeId], references: [gradeId])
+
+  @@unique([studentId, teacherId, subjectId, academicPeriod])
+  @@index([studentId], map: "studentteachersubject_studentid_index")
+  @@index([teacherId], map: "studentteachersubject_teacherid_index")
+  @@index([subjectId], map: "studentteachersubject_subjectid_index")
+  @@index([gradeId], map: "studentteachersubject_gradeid_index")
+  @@map("StudentTeacherSubject")
 }
