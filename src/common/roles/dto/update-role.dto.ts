@@ -1,4 +1,17 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateRoleDto } from './create-role.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsOptional, MaxLength, MinLength } from 'class-validator';
 
-export class UpdateRoleDto extends PartialType(CreateRoleDto) {}
+export class UpdateRoleDto {
+  @ApiProperty({
+    description: 'The name of the role',
+    example: 'Administrator',
+    maxLength: 255,
+    minLength: 1,
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MinLength(1)
+  @MaxLength(255)
+  roleName?: string;
+}

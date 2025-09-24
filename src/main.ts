@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { RolesModule } from './common/roles/roles.module';
+import { GradesModule } from './common/grades/grades.module';
+import { SubjectsModule } from './common/subjects/subjects.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,15 +25,22 @@ async function bootstrap() {
       'API for managing grades, roles, and subjects in a report card system',
     )
     .setVersion('1.0')
-    .addTag('roles', 'Role management')
-    .addTag('grades', 'Grade management')
-    .addTag('subjects', 'Subject management')
+    .addTag('Roles', 'Role management')
+    .addTag('Grades', 'Grade management')
+    .addTag('Subjects', 'Subject management')
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    include: [RolesModule, GradesModule, SubjectsModule],
+  });
   SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  console.log(
+    `Application is running on: http://localhost:${process.env.PORT ?? 3000}`,
+  );
+  console.log(
+    `Swagger documentation available at: http://localhost:${process.env.PORT ?? 3000}/api`,
+  );
 }
 bootstrap().catch((err) => console.error('Error starting application:', err));

@@ -23,7 +23,7 @@ import { CreateGradeDto } from './dto/create-grade.dto';
 import { UpdateGradeDto } from './dto/update-grade.dto';
 import { Grade } from './entities/grade.entity';
 
-@ApiTags('grades')
+@ApiTags('Grades')
 @Controller('grades')
 export class GradesController {
   constructor(private readonly gradesService: GradesService) {}
@@ -60,7 +60,10 @@ export class GradesController {
   findAll(
     @Query('status') status?: 'active' | 'inactive' | 'all',
   ): Promise<Grade[]> {
-    return this.gradesService.findAll(status);
+    // Normalize the status parameter: if it's not 'active' or 'inactive', treat as 'all'
+    const normalizedStatus =
+      status && ['active', 'inactive'].includes(status) ? status : 'all';
+    return this.gradesService.findAll(normalizedStatus);
   }
 
   @Get(':id')

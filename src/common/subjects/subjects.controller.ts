@@ -23,7 +23,7 @@ import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { Subject } from './entities/subject.entity';
 
-@ApiTags('subjects')
+@ApiTags('Subjects')
 @Controller('subjects')
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
@@ -60,7 +60,10 @@ export class SubjectsController {
   findAll(
     @Query('status') status?: 'active' | 'inactive' | 'all',
   ): Promise<Subject[]> {
-    return this.subjectsService.findAll(status);
+    // Normalize the status parameter: if it's not 'active' or 'inactive', treat as 'all'
+    const normalizedStatus =
+      status && ['active', 'inactive'].includes(status) ? status : 'all';
+    return this.subjectsService.findAll(normalizedStatus);
   }
 
   @Get(':id')

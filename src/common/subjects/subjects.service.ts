@@ -22,7 +22,8 @@ export class SubjectsService {
     } else if (status === 'inactive') {
       where = { subjectStatus: false };
     }
-    // For 'all' or undefined, no where condition (returns all records)
+    // For 'all', undefined, or any other value, return all records
+    // This ensures consistent behavior and eliminates confusion with "--" or other values
 
     return this.prisma.subject.findMany({
       where,

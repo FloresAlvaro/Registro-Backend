@@ -23,7 +23,7 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 
-@ApiTags('roles')
+@ApiTags('Roles')
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
@@ -60,7 +60,10 @@ export class RolesController {
   findAll(
     @Query('status') status?: 'active' | 'inactive' | 'all',
   ): Promise<Role[]> {
-    return this.rolesService.findAll(status);
+    // Normalize the status parameter: if it's not 'active' or 'inactive', treat as 'all'
+    const normalizedStatus =
+      status && ['active', 'inactive'].includes(status) ? status : 'all';
+    return this.rolesService.findAll(normalizedStatus);
   }
 
   @Get(':id')
