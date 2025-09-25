@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateTeacherSubjectDto } from './dto/create-teacher-subject.dto';
 import { UpdateTeacherSubjectDto } from './dto/update-teacher-subject.dto';
@@ -14,7 +18,7 @@ export class TeacherSubjectsService {
     const teacher = await this.prisma.teacher.findUnique({
       where: { teacherId: teacherId },
     });
-    
+
     if (!teacher) {
       throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
     }
@@ -22,7 +26,7 @@ export class TeacherSubjectsService {
     const subject = await this.prisma.subject.findUnique({
       where: { subjectID: subjectId },
     });
-    
+
     if (!subject) {
       throw new NotFoundException(`Subject with ID ${subjectId} not found`);
     }
@@ -39,17 +43,19 @@ export class TeacherSubjectsService {
           subject: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new BadRequestException('This teacher is already assigned to this subject');
+        throw new BadRequestException(
+          'This teacher is already assigned to this subject',
+        );
       }
       throw error;
     }
   }
 
   async findAll(teacherId?: number, subjectId?: number) {
-    const where: any = {};
-    
+    const where: Record<string, any> = {};
+
     if (teacherId) where.teacherId = teacherId;
     if (subjectId) where.subjectId = subjectId;
 
@@ -83,7 +89,9 @@ export class TeacherSubjectsService {
     });
 
     if (!teacherSubject) {
-      throw new NotFoundException(`Teacher Subject assignment with ID ${id} not found`);
+      throw new NotFoundException(
+        `Teacher Subject assignment with ID ${id} not found`,
+      );
     }
 
     return teacherSubject;
@@ -93,7 +101,7 @@ export class TeacherSubjectsService {
     const teacher = await this.prisma.teacher.findUnique({
       where: { teacherId: teacherId },
     });
-    
+
     if (!teacher) {
       throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
     }
@@ -113,7 +121,7 @@ export class TeacherSubjectsService {
     const subject = await this.prisma.subject.findUnique({
       where: { subjectID: subjectId },
     });
-    
+
     if (!subject) {
       throw new NotFoundException(`Subject with ID ${subjectId} not found`);
     }
@@ -139,16 +147,20 @@ export class TeacherSubjectsService {
     });
 
     if (!existingAssignment) {
-      throw new NotFoundException(`Teacher Subject assignment with ID ${id} not found`);
+      throw new NotFoundException(
+        `Teacher Subject assignment with ID ${id} not found`,
+      );
     }
 
     if (updateTeacherSubjectDto.teacherId) {
       const teacher = await this.prisma.teacher.findUnique({
         where: { teacherId: updateTeacherSubjectDto.teacherId },
       });
-      
+
       if (!teacher) {
-        throw new NotFoundException(`Teacher with ID ${updateTeacherSubjectDto.teacherId} not found`);
+        throw new NotFoundException(
+          `Teacher with ID ${updateTeacherSubjectDto.teacherId} not found`,
+        );
       }
     }
 
@@ -156,9 +168,11 @@ export class TeacherSubjectsService {
       const subject = await this.prisma.subject.findUnique({
         where: { subjectID: updateTeacherSubjectDto.subjectId },
       });
-      
+
       if (!subject) {
-        throw new NotFoundException(`Subject with ID ${updateTeacherSubjectDto.subjectId} not found`);
+        throw new NotFoundException(
+          `Subject with ID ${updateTeacherSubjectDto.subjectId} not found`,
+        );
       }
     }
 
@@ -175,9 +189,11 @@ export class TeacherSubjectsService {
           subject: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new BadRequestException('This teacher is already assigned to this subject');
+        throw new BadRequestException(
+          'This teacher is already assigned to this subject',
+        );
       }
       throw error;
     }
@@ -189,7 +205,9 @@ export class TeacherSubjectsService {
     });
 
     if (!existingAssignment) {
-      throw new NotFoundException(`Teacher Subject assignment with ID ${id} not found`);
+      throw new NotFoundException(
+        `Teacher Subject assignment with ID ${id} not found`,
+      );
     }
 
     return await this.prisma.teacherSubject.delete({

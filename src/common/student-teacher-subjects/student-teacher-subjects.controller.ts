@@ -11,37 +11,58 @@ import {
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { StudentTeacherSubjectsService } from './student-teacher-subjects.service';
 import { CreateStudentTeacherSubjectDto } from './dto/create-student-teacher-subject.dto';
 import { UpdateStudentTeacherSubjectDto } from './dto/update-student-teacher-subject.dto';
 import { StudentTeacherSubjectKey } from './interfaces/student-teacher-subject-key.interface';
 
-@ApiTags('student-teacher-subjects')
+@ApiTags('Student Teacher Subjects')
 @Controller('student-teacher-subjects')
 export class StudentTeacherSubjectsController {
-  constructor(private readonly studentTeacherSubjectsService: StudentTeacherSubjectsService) {}
+  constructor(
+    private readonly studentTeacherSubjectsService: StudentTeacherSubjectsService,
+  ) {}
 
   @Post()
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Create a new student-teacher-subject assignment',
-    description: 'Assigns a student to a teacher for a specific subject and academic period'
+    description:
+      'Assigns a student to a teacher for a specific subject and academic period',
   })
   @ApiResponse({
     status: 201,
-    description: 'The student-teacher-subject assignment has been successfully created.',
+    description:
+      'The student-teacher-subject assignment has been successfully created.',
   })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
-  @ApiResponse({ status: 404, description: 'Student, Teacher, Subject, or Grade not found.' })
-  @ApiResponse({ status: 409, description: 'Assignment already exists for this academic period.' })
-  create(@Body() createStudentTeacherSubjectDto: CreateStudentTeacherSubjectDto) {
-    return this.studentTeacherSubjectsService.create(createStudentTeacherSubjectDto);
+  @ApiResponse({
+    status: 404,
+    description: 'Student, Teacher, Subject, or Grade not found.',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Assignment already exists for this academic period.',
+  })
+  create(
+    @Body() createStudentTeacherSubjectDto: CreateStudentTeacherSubjectDto,
+  ) {
+    return this.studentTeacherSubjectsService.create(
+      createStudentTeacherSubjectDto,
+    );
   }
 
   @Get()
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get all student-teacher-subject assignments',
-    description: 'Retrieve all student-teacher-subject assignments with related data'
+    description:
+      'Retrieve all student-teacher-subject assignments with related data',
   })
   @ApiResponse({
     status: 200,
@@ -52,9 +73,9 @@ export class StudentTeacherSubjectsController {
   }
 
   @Get('student/:studentId')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get assignments for a specific student',
-    description: 'Retrieve all teacher-subject assignments for a student'
+    description: 'Retrieve all teacher-subject assignments for a student',
   })
   @ApiParam({ name: 'studentId', type: 'number', description: 'Student ID' })
   @ApiResponse({
@@ -67,9 +88,9 @@ export class StudentTeacherSubjectsController {
   }
 
   @Get('teacher/:teacherId')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get assignments for a specific teacher',
-    description: 'Retrieve all student-subject assignments for a teacher'
+    description: 'Retrieve all student-subject assignments for a teacher',
   })
   @ApiParam({ name: 'teacherId', type: 'number', description: 'Teacher ID' })
   @ApiResponse({
@@ -82,9 +103,9 @@ export class StudentTeacherSubjectsController {
   }
 
   @Get('subject/:subjectId')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get assignments for a specific subject',
-    description: 'Retrieve all student-teacher assignments for a subject'
+    description: 'Retrieve all student-teacher assignments for a subject',
   })
   @ApiParam({ name: 'subjectId', type: 'number', description: 'Subject ID' })
   @ApiResponse({
@@ -97,9 +118,9 @@ export class StudentTeacherSubjectsController {
   }
 
   @Get('grade/:gradeId')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get assignments for a specific grade',
-    description: 'Retrieve all student-teacher-subject assignments for a grade'
+    description: 'Retrieve all student-teacher-subject assignments for a grade',
   })
   @ApiParam({ name: 'gradeId', type: 'number', description: 'Grade ID' })
   @ApiResponse({
@@ -112,9 +133,9 @@ export class StudentTeacherSubjectsController {
   }
 
   @Get('academic-period')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get assignments by academic period',
-    description: 'Retrieve all assignments for a specific academic period'
+    description: 'Retrieve all assignments for a specific academic period',
   })
   @ApiQuery({ name: 'period', type: 'string', description: 'Academic period' })
   @ApiResponse({
@@ -122,13 +143,16 @@ export class StudentTeacherSubjectsController {
     description: 'Return all assignments for the specified academic period.',
   })
   findByAcademicPeriod(@Query('period') academicPeriod: string) {
-    return this.studentTeacherSubjectsService.findByAcademicPeriod(academicPeriod);
+    return this.studentTeacherSubjectsService.findByAcademicPeriod(
+      academicPeriod,
+    );
   }
 
   @Get('active')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get all active assignments',
-    description: 'Retrieve all currently active student-teacher-subject assignments'
+    description:
+      'Retrieve all currently active student-teacher-subject assignments',
   })
   @ApiResponse({
     status: 200,
@@ -139,14 +163,19 @@ export class StudentTeacherSubjectsController {
   }
 
   @Get('find')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Find a specific assignment',
-    description: 'Find an assignment by student, teacher, subject, and academic period'
+    description:
+      'Find an assignment by student, teacher, subject, and academic period',
   })
   @ApiQuery({ name: 'studentId', type: 'number', description: 'Student ID' })
   @ApiQuery({ name: 'teacherId', type: 'number', description: 'Teacher ID' })
   @ApiQuery({ name: 'subjectId', type: 'number', description: 'Subject ID' })
-  @ApiQuery({ name: 'academicPeriod', type: 'string', description: 'Academic period' })
+  @ApiQuery({
+    name: 'academicPeriod',
+    type: 'string',
+    description: 'Academic period',
+  })
   @ApiResponse({
     status: 200,
     description: 'Return the specific assignment.',
@@ -168,20 +197,28 @@ export class StudentTeacherSubjectsController {
   }
 
   @Patch('update')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Update a specific assignment',
-    description: 'Update an assignment by student, teacher, subject, and academic period'
+    description:
+      'Update an assignment by student, teacher, subject, and academic period',
   })
   @ApiQuery({ name: 'studentId', type: 'number', description: 'Student ID' })
   @ApiQuery({ name: 'teacherId', type: 'number', description: 'Teacher ID' })
   @ApiQuery({ name: 'subjectId', type: 'number', description: 'Subject ID' })
-  @ApiQuery({ name: 'academicPeriod', type: 'string', description: 'Academic period' })
+  @ApiQuery({
+    name: 'academicPeriod',
+    type: 'string',
+    description: 'Academic period',
+  })
   @ApiResponse({
     status: 200,
     description: 'The assignment has been successfully updated.',
   })
   @ApiResponse({ status: 404, description: 'Assignment not found.' })
-  @ApiResponse({ status: 409, description: 'Update would create duplicate assignment.' })
+  @ApiResponse({
+    status: 409,
+    description: 'Update would create duplicate assignment.',
+  })
   update(
     @Query('studentId', ParseIntPipe) studentId: number,
     @Query('teacherId', ParseIntPipe) teacherId: number,
@@ -195,19 +232,26 @@ export class StudentTeacherSubjectsController {
       subjectId,
       academicPeriod,
     };
-    return this.studentTeacherSubjectsService.update(key, updateStudentTeacherSubjectDto);
+    return this.studentTeacherSubjectsService.update(
+      key,
+      updateStudentTeacherSubjectDto,
+    );
   }
 
   @Patch('toggle-active')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Toggle assignment active status',
-    description: 'Toggle the active status of an assignment'
+    description: 'Toggle the active status of an assignment',
   })
   @ApiQuery({ name: 'studentId', type: 'number', description: 'Student ID' })
   @ApiQuery({ name: 'teacherId', type: 'number', description: 'Teacher ID' })
   @ApiQuery({ name: 'subjectId', type: 'number', description: 'Subject ID' })
-  @ApiQuery({ name: 'academicPeriod', type: 'string', description: 'Academic period' })
+  @ApiQuery({
+    name: 'academicPeriod',
+    type: 'string',
+    description: 'Academic period',
+  })
   @ApiResponse({
     status: 200,
     description: 'The assignment active status has been successfully toggled.',
@@ -229,14 +273,19 @@ export class StudentTeacherSubjectsController {
   }
 
   @Delete('remove')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Delete a specific assignment',
-    description: 'Delete an assignment by student, teacher, subject, and academic period'
+    description:
+      'Delete an assignment by student, teacher, subject, and academic period',
   })
   @ApiQuery({ name: 'studentId', type: 'number', description: 'Student ID' })
   @ApiQuery({ name: 'teacherId', type: 'number', description: 'Teacher ID' })
   @ApiQuery({ name: 'subjectId', type: 'number', description: 'Subject ID' })
-  @ApiQuery({ name: 'academicPeriod', type: 'string', description: 'Academic period' })
+  @ApiQuery({
+    name: 'academicPeriod',
+    type: 'string',
+    description: 'Academic period',
+  })
   @ApiResponse({
     status: 200,
     description: 'The assignment has been successfully deleted.',

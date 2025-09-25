@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateTeacherGradeDto } from './dto/create-teacher-grade.dto';
 import { UpdateTeacherGradeDto } from './dto/update-teacher-grade.dto';
@@ -14,7 +18,7 @@ export class TeacherGradesService {
     const teacher = await this.prisma.teacher.findUnique({
       where: { teacherId: teacherId },
     });
-    
+
     if (!teacher) {
       throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
     }
@@ -22,7 +26,7 @@ export class TeacherGradesService {
     const grade = await this.prisma.grade.findUnique({
       where: { gradeId: gradeId },
     });
-    
+
     if (!grade) {
       throw new NotFoundException(`Grade with ID ${gradeId} not found`);
     }
@@ -39,17 +43,19 @@ export class TeacherGradesService {
           grade: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new BadRequestException('This teacher is already assigned to this grade');
+        throw new BadRequestException(
+          'This teacher is already assigned to this grade',
+        );
       }
       throw error;
     }
   }
 
   async findAll(teacherId?: number, gradeId?: number) {
-    const where: any = {};
-    
+    const where: Record<string, any> = {};
+
     if (teacherId) where.teacherId = teacherId;
     if (gradeId) where.gradeId = gradeId;
 
@@ -83,7 +89,9 @@ export class TeacherGradesService {
     });
 
     if (!teacherGrade) {
-      throw new NotFoundException(`Teacher Grade assignment with ID ${id} not found`);
+      throw new NotFoundException(
+        `Teacher Grade assignment with ID ${id} not found`,
+      );
     }
 
     return teacherGrade;
@@ -93,7 +101,7 @@ export class TeacherGradesService {
     const teacher = await this.prisma.teacher.findUnique({
       where: { teacherId: teacherId },
     });
-    
+
     if (!teacher) {
       throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
     }
@@ -113,7 +121,7 @@ export class TeacherGradesService {
     const grade = await this.prisma.grade.findUnique({
       where: { gradeId: gradeId },
     });
-    
+
     if (!grade) {
       throw new NotFoundException(`Grade with ID ${gradeId} not found`);
     }
@@ -139,16 +147,20 @@ export class TeacherGradesService {
     });
 
     if (!existingAssignment) {
-      throw new NotFoundException(`Teacher Grade assignment with ID ${id} not found`);
+      throw new NotFoundException(
+        `Teacher Grade assignment with ID ${id} not found`,
+      );
     }
 
     if (updateTeacherGradeDto.teacherId) {
       const teacher = await this.prisma.teacher.findUnique({
         where: { teacherId: updateTeacherGradeDto.teacherId },
       });
-      
+
       if (!teacher) {
-        throw new NotFoundException(`Teacher with ID ${updateTeacherGradeDto.teacherId} not found`);
+        throw new NotFoundException(
+          `Teacher with ID ${updateTeacherGradeDto.teacherId} not found`,
+        );
       }
     }
 
@@ -156,9 +168,11 @@ export class TeacherGradesService {
       const grade = await this.prisma.grade.findUnique({
         where: { gradeId: updateTeacherGradeDto.gradeId },
       });
-      
+
       if (!grade) {
-        throw new NotFoundException(`Grade with ID ${updateTeacherGradeDto.gradeId} not found`);
+        throw new NotFoundException(
+          `Grade with ID ${updateTeacherGradeDto.gradeId} not found`,
+        );
       }
     }
 
@@ -175,9 +189,11 @@ export class TeacherGradesService {
           grade: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new BadRequestException('This teacher is already assigned to this grade');
+        throw new BadRequestException(
+          'This teacher is already assigned to this grade',
+        );
       }
       throw error;
     }
@@ -189,7 +205,9 @@ export class TeacherGradesService {
     });
 
     if (!existingAssignment) {
-      throw new NotFoundException(`Teacher Grade assignment with ID ${id} not found`);
+      throw new NotFoundException(
+        `Teacher Grade assignment with ID ${id} not found`,
+      );
     }
 
     return await this.prisma.teacherGrade.delete({
