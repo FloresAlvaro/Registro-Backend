@@ -43,8 +43,8 @@ export class TeacherGradesService {
           grade: true,
         },
       });
-    } catch (error: any) {
-      if (error.code === 'P2002') {
+    } catch (error: unknown) {
+      if ((error as Record<string, any>).code === 'P2002') {
         throw new BadRequestException(
           'This teacher is already assigned to this grade',
         );
@@ -189,8 +189,8 @@ export class TeacherGradesService {
           grade: true,
         },
       });
-    } catch (error: any) {
-      if (error.code === 'P2002') {
+    } catch (error: unknown) {
+      if ((error as Record<string, any>).code === 'P2002') {
         throw new BadRequestException(
           'This teacher is already assigned to this grade',
         );

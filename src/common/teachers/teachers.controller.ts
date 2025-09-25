@@ -82,10 +82,7 @@ export class TeachersController {
     status: HttpStatus.NOT_FOUND,
     description: 'Teacher not found',
   })
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() _updateTeacherDto: UpdateTeacherDto,
-  ): Promise<Teacher> {
+  update(@Param('id', ParseIntPipe) id: number): Promise<Teacher> {
     return this.teachersService.update(id);
   }
 

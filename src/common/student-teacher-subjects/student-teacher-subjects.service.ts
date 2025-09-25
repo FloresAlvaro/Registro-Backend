@@ -80,8 +80,8 @@ export class StudentTeacherSubjectsService {
           grade: true,
         },
       });
-    } catch (error: any) {
-      if (error.code === 'P2002') {
+    } catch (error: unknown) {
+      if ((error as Record<string, any>).code === 'P2002') {
         throw new ConflictException(
           'This student-teacher-subject assignment already exists for the given academic period',
         );
@@ -302,8 +302,8 @@ export class StudentTeacherSubjectsService {
           grade: true,
         },
       });
-    } catch (error: any) {
-      if (error.code === 'P2002') {
+    } catch (error: unknown) {
+      if ((error as Record<string, any>).code === 'P2002') {
         throw new ConflictException(
           'Cannot update: this would create a duplicate assignment',
         );
