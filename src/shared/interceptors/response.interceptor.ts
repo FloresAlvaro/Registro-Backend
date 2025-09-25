@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Response } from 'express';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -24,15 +23,22 @@ export class ResponseInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<ApiResponse<T>> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const request = context.switchToHttp().getRequest();
-    const response = context.switchToHttp().getResponse<Response>();
 
     return next.handle().pipe(
       map((data) => ({
         success: true,
-        message: this.getSuccessMessage(request.method, request.route?.path),
+        message: this.getSuccessMessage(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+          request.method,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+          request.route?.path,
+        ),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         data,
         timestamp: new Date().toISOString(),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         path: request.url,
       })),
     );

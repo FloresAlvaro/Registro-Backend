@@ -1,10 +1,9 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '@prisma';
 import { CreateGradeRecordDto } from './dto/create-grade-record.dto';
 import { UpdateGradeRecordDto } from './dto/update-grade-record.dto';
-import { BaseService } from '../base/base.service';
+import { BaseService, DateUtils, ValidationUtils } from '@shared';
 import { GradeRecord } from './entities/grade-record.entity';
-import { DateUtils, ValidationUtils } from '../utils/common.utils';
 
 @Injectable()
 export class GradeRecordsService extends BaseService<
@@ -29,7 +28,8 @@ export class GradeRecordsService extends BaseService<
   }
 
   // Optimized create method - batch validation instead of N+1 queries
-  async create(createGradeRecordDto: CreateGradeRecordDto) {
+
+  async create(createGradeRecordDto: CreateGradeRecordDto): Promise<any> {
     const { studentId, subjectId, gradeId } = createGradeRecordDto;
 
     // Batch validation instead of separate queries

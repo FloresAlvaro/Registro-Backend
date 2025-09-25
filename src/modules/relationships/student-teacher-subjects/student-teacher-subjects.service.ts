@@ -3,7 +3,7 @@ import {
   NotFoundException,
   ConflictException,
 } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '@prisma';
 import { StudentTeacherSubject } from '@prisma/client';
 import { CreateStudentTeacherSubjectDto } from './dto/create-student-teacher-subject.dto';
 import { UpdateStudentTeacherSubjectDto } from './dto/update-student-teacher-subject.dto';

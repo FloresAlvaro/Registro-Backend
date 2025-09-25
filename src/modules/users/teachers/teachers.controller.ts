@@ -22,8 +22,7 @@ import { TeachersService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { Teacher } from './entities/teacher.entity';
-import { StatusFilterDto, SearchDto } from '../dto/base.dto';
-import { PaginatedResponse } from '../interfaces/common.interfaces';
+import { SearchDto, PaginatedResponse } from '@shared';
 
 @ApiTags('Teachers')
 @Controller('teachers')

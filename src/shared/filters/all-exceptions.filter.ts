@@ -16,7 +16,7 @@ export interface ErrorResponse {
   statusCode: number;
   timestamp: string;
   path: string;
-  details?: any;
+  details?: unknown;
 }
 
 @Catch()
@@ -31,7 +31,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     let status: number;
     let message: string;
     let error: string;
-    let details: any;
+    let details: unknown;
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
@@ -41,9 +41,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message = exceptionResponse;
         error = exception.name;
       } else {
-        const responseObj = exceptionResponse as any;
-        message = responseObj.message || exception.message;
-        error = responseObj.error || exception.name;
+        const responseObj = exceptionResponse as Record<string, unknown>;
+
+        message = (responseObj.message as string) || exception.message;
+
+        error = (responseObj.error as string) || exception.name;
+
         details = responseObj.details;
       }
     } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
@@ -78,13 +81,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
-      ...(details && { details }),
     };
+
+    // Add details if they exist
+    if (details) {
+      (errorResponse as ErrorResponse & { details: unknown }).details = details;
+    }
+
+    const logContext = exception instanceof Error ? exception.stack : exception;
 
     // Log the error
     this.logger.error(
       `${request.method} ${request.url} - ${status} - ${message}`,
-      exception instanceof Error ? exception.stack : exception,
+      logContext,
     );
 
     response.status(status).json(errorResponse);
@@ -111,13 +120,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
   private getPrismaErrorMessage(
     error: Prisma.PrismaClientKnownRequestError,
   ): string {
+    const target = error.meta?.target as string | undefined;
     switch (error.code) {
       case 'P2000':
         return 'The provided value is too long for the database field';
       case 'P2001':
         return 'The requested record was not found';
       case 'P2002':
-        return `A record with this ${error.meta?.target} already exists`;
+        return `A record with this ${target || 'field'} already exists`;
       case 'P2003':
         return 'This operation violates a foreign key constraint';
       case 'P2025':

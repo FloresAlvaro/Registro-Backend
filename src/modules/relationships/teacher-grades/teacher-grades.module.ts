@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TeacherGradesService } from './teacher-grades.service';
 import { TeacherGradesController } from './teacher-grades.controller';
-import { PrismaModule } from '../../prisma/prisma.module';
+import { PrismaModule } from '@prisma';
 
 @Module({
   imports: [PrismaModule],

@@ -3,7 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '@prisma';
 import { CreateTeacherGradeDto } from './dto/create-teacher-grade.dto';
 import { UpdateTeacherGradeDto } from './dto/update-teacher-grade.dto';
 

@@ -8,51 +8,13 @@
 // ✅ Before (Old way with relative paths):
 // import { BaseService } from '../../../shared/base/base.service';
 // import { DateUtils, QueryUtils } from '../../../shared/utils/common.utils';
-// import { PaginationDto, StatusFilterDto } from '../../../shared/dto/base.dto';
+// import { PaginationDto } from '../../../shared/dto/base.dto';
 // import { PrismaService } from '../../../prisma/prisma.service';
 
 // ✅ After (New way with path mappings):
-import {
-  BaseService,
-  DateUtils,
-  QueryUtils,
-  PaginationDto,
-  StatusFilterDto,
-  PaginatedResponse,
-  ResponseInterceptor,
-  LoggingInterceptor,
-  HttpExceptionFilter,
-} from '@shared';
+import { BaseService, DateUtils, QueryUtils, PaginationDto } from '@shared';
 
-import { PrismaService, PrismaModule } from '@prisma';
-
-import { appConfig, validationConfig } from '@config';
-
-// Domain-specific imports
-import {
-  GradesService,
-  SubjectsService,
-  GradeRecordsService,
-  GradeSubjectsService,
-} from '@academic';
-
-import {
-  UsersService,
-  StudentsService,
-  TeachersService,
-  RolesService,
-} from '@users';
-
-import {
-  TeacherGradesService,
-  TeacherSubjectsService,
-  StudentTeacherSubjectsService,
-} from '@relationships';
-
-// Specific imports from subdirectories
-import { CreateGradeDto } from '@academic/grades/dto/create-grade.dto';
-import { UpdateUserDto } from '@users/users/dto/update-user.dto';
-import { TeacherGrade } from '@relationships/teacher-grades/entities/teacher-grade.entity';
+import { PrismaService } from '@prisma';
 
 /**
  * 📋 Available Path Mappings:
@@ -73,7 +35,7 @@ import { TeacherGrade } from '@relationships/teacher-grades/entities/teacher-gra
  */
 
 export class PathMappingExampleService extends BaseService<any, any, any> {
-  constructor(private readonly prisma: PrismaService) {
+  constructor(prisma: PrismaService) {
     super(prisma, 'Example', 'id');
   }
 

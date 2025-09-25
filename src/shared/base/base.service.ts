@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 
+type PrismaModel = Record<string, any>;
+
 @Injectable()
 export abstract class BaseService<T, CreateDto, UpdateDto> {
   constructor(
@@ -10,11 +12,12 @@ export abstract class BaseService<T, CreateDto, UpdateDto> {
   ) {}
 
   // Abstract methods that must be implemented by child classes
-  abstract getModel(): Record<string, any>;
-  abstract getIncludeOptions(): Record<string, any>;
+  abstract getModel(): PrismaModel;
+  abstract getIncludeOptions(): PrismaModel;
 
   async findOne(id: number): Promise<T> {
     const model = this.getModel();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
     const item = await model.findUnique({
       where: { [this.idField]: id },
       include: this.getIncludeOptions(),
@@ -27,8 +30,9 @@ export abstract class BaseService<T, CreateDto, UpdateDto> {
     return item as T;
   }
 
-  async findAll(where: Record<string, any> = {}): Promise<T[]> {
+  async findAll(where: PrismaModel = {}): Promise<T[]> {
     const model = this.getModel();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return model.findMany({
       where,
       orderBy: { [this.idField]: 'asc' },
@@ -40,6 +44,7 @@ export abstract class BaseService<T, CreateDto, UpdateDto> {
     await this.findOne(id); // This will throw NotFoundException if not found
 
     const model = this.getModel();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return model.delete({
       where: { [this.idField]: id },
     }) as Promise<T>;
@@ -47,6 +52,7 @@ export abstract class BaseService<T, CreateDto, UpdateDto> {
 
   async create(createDto: CreateDto): Promise<T> {
     const model = this.getModel();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return model.create({
       data: createDto,
       include: this.getIncludeOptions(),
@@ -57,6 +63,7 @@ export abstract class BaseService<T, CreateDto, UpdateDto> {
     await this.findOne(id); // This will throw NotFoundException if not found
 
     const model = this.getModel();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return model.update({
       where: { [this.idField]: id },
       data: updateDto,

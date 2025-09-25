@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '@prisma';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { Teacher } from './entities/teacher.entity';
-import { BaseService } from '../base/base.service';
-import { QueryUtils } from '../utils/common.utils';
-import { SearchDto } from '../dto/base.dto';
-import { PaginatedResponse } from '../interfaces/common.interfaces';
+import { BaseService, QueryUtils, SearchDto, PaginatedResponse } from '@shared';
 
 @Injectable()
 export class TeachersService extends BaseService<

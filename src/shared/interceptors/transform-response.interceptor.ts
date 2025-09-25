@@ -19,6 +19,7 @@ export class TransformResponseInterceptor<T>
     return next.handle().pipe(
       map((data) => ({
         success: true,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         data,
         message: this.getSuccessMessage(context),
       })),
@@ -26,7 +27,9 @@ export class TransformResponseInterceptor<T>
   }
 
   private getSuccessMessage(context: ExecutionContext): string {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const request = context.switchToHttp().getRequest();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const method = request.method;
 
     switch (method) {

@@ -86,7 +86,7 @@ export class GradeRecordsController {
     @Query('gradeId') gradeId?: number,
     @Query('academicPeriod') academicPeriod?: string,
   ) {
-    return this.gradeRecordsService.findAll(
+    return this.gradeRecordsService.findAllFiltered(
       studentId,
       subjectId,
       gradeId,
