@@ -53,8 +53,8 @@ export class GradeRecordsService {
           grade: true,
         },
       });
-    } catch (error: any) {
-      if (error.code === 'P2002') {
+    } catch (error: unknown) {
+      if ((error as Record<string, any>).code === 'P2002') {
         throw new BadRequestException(
           'A grade record with these criteria already exists',
         );

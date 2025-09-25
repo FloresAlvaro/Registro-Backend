@@ -38,11 +38,23 @@ async function bootstrap() {
     .addTag('Users', 'User accounts and profile management')
     .addTag('Students', 'Student enrollment and academic records')
     .addTag('Teachers', 'Teacher profiles and assignments')
-    .addTag('Grade Records', 'Academic performance tracking, evaluations and statistics')
+    .addTag(
+      'Grade Records',
+      'Academic performance tracking, evaluations and statistics',
+    )
     .addTag('Teacher Grades', 'Teacher assignments to specific grade levels')
-    .addTag('Grade Subjects', 'Subject curriculum assignments for each grade level')
-    .addTag('Teacher Subjects', 'Teacher specializations and subject assignments')
-    .addTag('Student Teacher Subjects', 'Complex three-way enrollment management for student-teacher-subject relationships')
+    .addTag(
+      'Grade Subjects',
+      'Subject curriculum assignments for each grade level',
+    )
+    .addTag(
+      'Teacher Subjects',
+      'Teacher specializations and subject assignments',
+    )
+    .addTag(
+      'Student Teacher Subjects',
+      'Complex three-way enrollment management for student-teacher-subject relationships',
+    )
     .addBearerAuth()
     .addServer('http://localhost:3000', 'Development server')
     .setContact(
@@ -55,7 +67,7 @@ async function bootstrap() {
 
   // Create Swagger document
   const document = SwaggerModule.createDocument(app, config);
-  
+
   // Setup Swagger UI
   SwaggerModule.setup('api', app, document, {
     swaggerOptions: {
@@ -80,7 +92,7 @@ async function bootstrap() {
   // Start the application
   const port = process.env.PORT || 3000;
   await app.listen(port);
-  
+
   console.log('🚀 Report Card API Server Started');
   console.log(`📡 Application running on: http://localhost:${port}`);
   console.log(`📚 Swagger documentation: http://localhost:${port}/api`);
