@@ -84,9 +84,9 @@ export class TeachersController {
   })
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateTeacherDto: UpdateTeacherDto,
+    @Body() _updateTeacherDto: UpdateTeacherDto,
   ): Promise<Teacher> {
-    return this.teachersService.update(id, updateTeacherDto);
+    return this.teachersService.update(id);
   }
 
   @Delete(':id')

@@ -9,7 +9,13 @@ import {
   Query,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { GradeSubjectsService } from './grade-subjects.service';
 import { CreateGradeSubjectDto } from './dto/create-grade-subject.dto';
 import { UpdateGradeSubjectDto } from './dto/update-grade-subject.dto';
@@ -43,7 +49,8 @@ export class GradeSubjectsController {
   @Get()
   @ApiOperation({
     summary: 'Get all grade-subject assignments',
-    description: 'Retrieve all grade-subject assignments with optional filtering',
+    description:
+      'Retrieve all grade-subject assignments with optional filtering',
   })
   @ApiQuery({
     name: 'gradeId',

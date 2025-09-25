@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { Teacher } from './entities/teacher.entity';
 
 @Injectable()
@@ -53,10 +52,7 @@ export class TeachersService {
     return teacher;
   }
 
-  async update(
-    id: number,
-    updateTeacherDto: UpdateTeacherDto,
-  ): Promise<Teacher> {
+  async update(id: number): Promise<Teacher> {
     await this.findOne(id); // This will throw NotFoundException if not found
 
     // Since Teacher only has userId which shouldn't be updated,

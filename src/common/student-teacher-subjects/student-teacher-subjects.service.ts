@@ -2,7 +2,6 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
-  BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StudentTeacherSubject } from '@prisma/client';
@@ -81,7 +80,7 @@ export class StudentTeacherSubjectsService {
           grade: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'P2002') {
         throw new ConflictException(
           'This student-teacher-subject assignment already exists for the given academic period',
@@ -110,9 +109,8 @@ export class StudentTeacherSubjectsService {
       },
       orderBy: [
         { gradeId: 'asc' },
-        { student: { user: { userFirstName: 'asc' } } },
-        { teacher: { user: { userFirstLastName: 'asc' } } },
         { subject: { subjectName: 'asc' } },
+        { academicPeriod: 'asc' },
       ],
     });
   }
@@ -174,10 +172,7 @@ export class StudentTeacherSubjectsService {
         subject: true,
         grade: true,
       },
-      orderBy: [
-        { subject: { subjectName: 'asc' } },
-        { academicPeriod: 'asc' },
-      ],
+      orderBy: [{ subject: { subjectName: 'asc' } }, { academicPeriod: 'asc' }],
     });
   }
 
@@ -207,11 +202,7 @@ export class StudentTeacherSubjectsService {
         subject: true,
         grade: true,
       },
-      orderBy: [
-        { gradeId: 'asc' },
-        { student: { user: { firstName: 'asc' } } },
-        { subject: { subjectName: 'asc' } },
-      ],
+      orderBy: [{ gradeId: 'asc' }, { subject: { subjectName: 'asc' } }],
     });
   }
 
@@ -241,11 +232,7 @@ export class StudentTeacherSubjectsService {
         subject: true,
         grade: true,
       },
-      orderBy: [
-        { gradeId: 'asc' },
-        { student: { user: { firstName: 'asc' } } },
-        { teacher: { user: { lastName: 'asc' } } },
-      ],
+      orderBy: [{ gradeId: 'asc' }, { academicPeriod: 'asc' }],
     });
   }
 
@@ -275,11 +262,7 @@ export class StudentTeacherSubjectsService {
         subject: true,
         grade: true,
       },
-      orderBy: [
-        { student: { user: { firstName: 'asc' } } },
-        { subject: { subjectName: 'asc' } },
-        { academicPeriod: 'asc' },
-      ],
+      orderBy: [{ subject: { subjectName: 'asc' } }, { academicPeriod: 'asc' }],
     });
   }
 
@@ -319,7 +302,7 @@ export class StudentTeacherSubjectsService {
           grade: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'P2002') {
         throw new ConflictException(
           'Cannot update: this would create a duplicate assignment',
@@ -377,9 +360,8 @@ export class StudentTeacherSubjectsService {
       },
       orderBy: [
         { gradeId: 'asc' },
-        { student: { user: { firstName: 'asc' } } },
-        { teacher: { user: { lastName: 'asc' } } },
         { subject: { subjectName: 'asc' } },
+        { academicPeriod: 'asc' },
       ],
     });
   }
@@ -402,12 +384,7 @@ export class StudentTeacherSubjectsService {
         subject: true,
         grade: true,
       },
-      orderBy: [
-        { gradeId: 'asc' },
-        { student: { user: { firstName: 'asc' } } },
-        { teacher: { user: { lastName: 'asc' } } },
-        { subject: { subjectName: 'asc' } },
-      ],
+      orderBy: [{ gradeId: 'asc' }, { subject: { subjectName: 'asc' } }],
     });
   }
 

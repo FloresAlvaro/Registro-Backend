@@ -67,7 +67,7 @@ export class UsersService {
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     await this.findOne(id); // This will throw NotFoundException if not found
 
-    const updateData: any = { ...updateUserDto };
+    const updateData: Record<string, any> = { ...updateUserDto };
 
     // Convert date string to Date object if provided
     if (updateUserDto.userDateOfBirth) {

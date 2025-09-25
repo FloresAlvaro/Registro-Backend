@@ -16,7 +16,11 @@ export class GradeRecord {
   @ApiProperty({ description: 'Score obtained', example: 85.5 })
   score: number;
 
-  @ApiProperty({ description: 'Maximum possible score', example: 100.0, default: 100.0 })
+  @ApiProperty({
+    description: 'Maximum possible score',
+    example: 100.0,
+    default: 100.0,
+  })
   maxScore: number;
 
   @ApiProperty({ description: 'Type of grade/evaluation', example: 'Exam' })
@@ -34,9 +38,15 @@ export class GradeRecord {
   @ApiProperty({ description: 'Record status', example: true, default: true })
   recordStatus: boolean;
 
-  @ApiProperty({ description: 'Creation timestamp', example: '2024-01-15T10:30:00.000Z' })
+  @ApiProperty({
+    description: 'Creation timestamp',
+    example: '2024-01-15T10:30:00.000Z',
+  })
   createdAt: Date | null;
 
-  @ApiProperty({ description: 'Last update timestamp', example: '2024-01-15T10:30:00.000Z' })
+  @ApiProperty({
+    description: 'Last update timestamp',
+    example: '2024-01-15T10:30:00.000Z',
+  })
   updatedAt: Date | null;
 }

@@ -7,39 +7,43 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  HttpStatus,
-  HttpCode,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { TeacherSubjectsService } from './teacher-subjects.service';
 import { CreateTeacherSubjectDto } from './dto/create-teacher-subject.dto';
 import { UpdateTeacherSubjectDto } from './dto/update-teacher-subject.dto';
 
-@ApiTags('teacher-subjects')
+@ApiTags('Teacher Subjects')
 @Controller('teacher-subjects')
 export class TeacherSubjectsController {
-  constructor(private readonly teacherSubjectsService: TeacherSubjectsService) {}
+  constructor(
+    private readonly teacherSubjectsService: TeacherSubjectsService,
+  ) {}
 
   @Post()
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Create a new teacher-subject assignment',
-    description: 'Assigns a teacher to teach a specific subject'
+    description: 'Assigns a teacher to teach a specific subject',
   })
   @ApiResponse({
     status: 201,
-    description: 'The teacher-subject assignment has been successfully created.',
+    description:
+      'The teacher-subject assignment has been successfully created.',
   })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @ApiResponse({ status: 404, description: 'Teacher or Subject not found.' })
-  @ApiResponse({ status: 409, description: 'Teacher-subject assignment already exists.' })
+  @ApiResponse({
+    status: 409,
+    description: 'Teacher-subject assignment already exists.',
+  })
   create(@Body() createTeacherSubjectDto: CreateTeacherSubjectDto) {
     return this.teacherSubjectsService.create(createTeacherSubjectDto);
   }
 
   @Get()
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get all teacher-subject assignments',
-    description: 'Retrieve all teacher-subject assignments with related data'
+    description: 'Retrieve all teacher-subject assignments with related data',
   })
   @ApiResponse({
     status: 200,
@@ -50,9 +54,9 @@ export class TeacherSubjectsController {
   }
 
   @Get('teacher/:teacherId')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get subjects for a specific teacher',
-    description: 'Retrieve all subjects assigned to a teacher'
+    description: 'Retrieve all subjects assigned to a teacher',
   })
   @ApiParam({ name: 'teacherId', type: 'number', description: 'Teacher ID' })
   @ApiResponse({
@@ -65,9 +69,9 @@ export class TeacherSubjectsController {
   }
 
   @Get('subject/:subjectId')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get teachers for a specific subject',
-    description: 'Retrieve all teachers assigned to a subject'
+    description: 'Retrieve all teachers assigned to a subject',
   })
   @ApiParam({ name: 'subjectId', type: 'number', description: 'Subject ID' })
   @ApiResponse({
@@ -80,9 +84,9 @@ export class TeacherSubjectsController {
   }
 
   @Get('active')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get all active teacher-subject assignments',
-    description: 'Retrieve all currently active teacher-subject assignments'
+    description: 'Retrieve all currently active teacher-subject assignments',
   })
   @ApiResponse({
     status: 200,
@@ -93,9 +97,9 @@ export class TeacherSubjectsController {
   }
 
   @Get(':id')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get a specific teacher-subject assignment',
-    description: 'Retrieve a teacher-subject assignment by ID'
+    description: 'Retrieve a teacher-subject assignment by ID',
   })
   @ApiParam({ name: 'id', type: 'number', description: 'Assignment ID' })
   @ApiResponse({
@@ -108,9 +112,9 @@ export class TeacherSubjectsController {
   }
 
   @Patch(':id')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Update a teacher-subject assignment',
-    description: 'Update a teacher-subject assignment by ID'
+    description: 'Update a teacher-subject assignment by ID',
   })
   @ApiParam({ name: 'id', type: 'number', description: 'Assignment ID' })
   @ApiResponse({
@@ -118,7 +122,10 @@ export class TeacherSubjectsController {
     description: 'The assignment has been successfully updated.',
   })
   @ApiResponse({ status: 404, description: 'Assignment not found.' })
-  @ApiResponse({ status: 409, description: 'Teacher-subject assignment already exists.' })
+  @ApiResponse({
+    status: 409,
+    description: 'Teacher-subject assignment already exists.',
+  })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateTeacherSubjectDto: UpdateTeacherSubjectDto,
@@ -127,9 +134,9 @@ export class TeacherSubjectsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Delete a teacher-subject assignment',
-    description: 'Delete a teacher-subject assignment by ID'
+    description: 'Delete a teacher-subject assignment by ID',
   })
   @ApiParam({ name: 'id', type: 'number', description: 'Assignment ID' })
   @ApiResponse({

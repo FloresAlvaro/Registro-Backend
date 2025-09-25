@@ -2,15 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { RolesModule } from './common/roles/roles.module';
-import { GradesModule } from './common/grades/grades.module';
-import { SubjectsModule } from './common/subjects/subjects.module';
-import { UsersModule } from './common/users/users.module';
-import { StudentsModule } from './common/students/students.module';
-import { TeachersModule } from './common/teachers/teachers.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Enable CORS
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
   // Enable validation
   app.useGlobalPipes(
@@ -18,6 +19,9 @@ async function bootstrap() {
       whitelist: true,
       transform: true,
       forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
 
@@ -25,35 +29,65 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Report Card API')
     .setDescription(
-      'API for managing users, students, teachers, grades, roles, and subjects in a report card system',
+      'Comprehensive Academic Management System API for managing users, students, teachers, grades, roles, subjects and complex academic relationships in a report card system',
     )
-    .setVersion('1.0')
-    .addTag('Roles', 'Role management')
-    .addTag('Grades', 'Grade management')
-    .addTag('Subjects', 'Subject management')
-    .addTag('Users', 'User management')
-    .addTag('Students', 'Student management')
-    .addTag('Teachers', 'Teacher management')
+    .setVersion('2.0')
+    .addTag('Roles', 'System roles and permissions management')
+    .addTag('Grades', 'Academic grade levels and classifications')
+    .addTag('Subjects', 'Academic subjects and curriculum management')
+    .addTag('Users', 'User accounts and profile management')
+    .addTag('Students', 'Student enrollment and academic records')
+    .addTag('Teachers', 'Teacher profiles and assignments')
+    .addTag('Grade Records', 'Academic performance tracking, evaluations and statistics')
+    .addTag('Teacher Grades', 'Teacher assignments to specific grade levels')
+    .addTag('Grade Subjects', 'Subject curriculum assignments for each grade level')
+    .addTag('Teacher Subjects', 'Teacher specializations and subject assignments')
+    .addTag('Student Teacher Subjects', 'Complex three-way enrollment management for student-teacher-subject relationships')
+    .addBearerAuth()
+    .addServer('http://localhost:3000', 'Development server')
+    .setContact(
+      'Development Team',
+      'https://github.com/FloresAlvaro/Registro-Backend',
+      'contact@reportcard.com',
+    )
+    .setLicense('MIT', 'https://opensource.org/licenses/MIT')
     .build();
 
-  const document = SwaggerModule.createDocument(app, config, {
-    include: [
-      RolesModule,
-      GradesModule,
-      SubjectsModule,
-      UsersModule,
-      StudentsModule,
-      TeachersModule,
+  // Create Swagger document
+  const document = SwaggerModule.createDocument(app, config);
+  
+  // Setup Swagger UI
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayRequestDuration: true,
+      docExpansion: 'none',
+      filter: true,
+      showRequestHeaders: true,
+      tryItOutEnabled: true,
+    },
+    customSiteTitle: 'Report Card API Documentation',
+    customfavIcon: '/favicon.ico',
+    customJs: [
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js',
+    ],
+    customCssUrl: [
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
     ],
   });
-  SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
-  console.log(
-    `Application is running on: http://localhost:${process.env.PORT ?? 3000}`,
-  );
-  console.log(
-    `Swagger documentation available at: http://localhost:${process.env.PORT ?? 3000}/api`,
-  );
+  // Start the application
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  
+  console.log('🚀 Report Card API Server Started');
+  console.log(`📡 Application running on: http://localhost:${port}`);
+  console.log(`📚 Swagger documentation: http://localhost:${port}/api`);
+  console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
 }
-bootstrap().catch((err) => console.error('Error starting application:', err));
+
+bootstrap().catch((err) => {
+  console.error('❌ Error starting application:', err);
+  process.exit(1);
+});

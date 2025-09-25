@@ -9,7 +9,13 @@ import {
   Query,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { GradeRecordsService } from './grade-records.service';
 import { CreateGradeRecordDto } from './dto/create-grade-record.dto';
 import { UpdateGradeRecordDto } from './dto/update-grade-record.dto';
@@ -22,7 +28,8 @@ export class GradeRecordsController {
   @Post()
   @ApiOperation({
     summary: 'Create a new grade record',
-    description: 'Create a new academic grade record for a student in a specific subject',
+    description:
+      'Create a new academic grade record for a student in a specific subject',
   })
   @ApiResponse({
     status: 201,
@@ -79,7 +86,12 @@ export class GradeRecordsController {
     @Query('gradeId') gradeId?: number,
     @Query('academicPeriod') academicPeriod?: string,
   ) {
-    return this.gradeRecordsService.findAll(studentId, subjectId, gradeId, academicPeriod);
+    return this.gradeRecordsService.findAll(
+      studentId,
+      subjectId,
+      gradeId,
+      academicPeriod,
+    );
   }
 
   @Get('student/:studentId')

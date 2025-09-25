@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsPositive, IsString, IsDateString, IsOptional, IsBoolean } from 'class-validator';
+import {
+  IsInt,
+  IsPositive,
+  IsString,
+  IsDateString,
+  IsOptional,
+  IsBoolean,
+} from 'class-validator';
 
 export class CreateStudentTeacherSubjectDto {
   @ApiProperty({

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateGradeRecordDto } from './dto/create-grade-record.dto';
 import { UpdateGradeRecordDto } from './dto/update-grade-record.dto';
@@ -14,7 +18,7 @@ export class GradeRecordsService {
     const student = await this.prisma.student.findUnique({
       where: { studentId: studentId },
     });
-    
+
     if (!student) {
       throw new NotFoundException(`Student with ID ${studentId} not found`);
     }
@@ -22,7 +26,7 @@ export class GradeRecordsService {
     const subject = await this.prisma.subject.findUnique({
       where: { subjectID: subjectId },
     });
-    
+
     if (!subject) {
       throw new NotFoundException(`Subject with ID ${subjectId} not found`);
     }
@@ -30,7 +34,7 @@ export class GradeRecordsService {
     const grade = await this.prisma.grade.findUnique({
       where: { gradeId: gradeId },
     });
-    
+
     if (!grade) {
       throw new NotFoundException(`Grade with ID ${gradeId} not found`);
     }
@@ -39,7 +43,7 @@ export class GradeRecordsService {
       return await this.prisma.gradeRecord.create({
         data: {
           ...createGradeRecordDto,
-          evaluationDate: createGradeRecordDto.evaluationDate 
+          evaluationDate: createGradeRecordDto.evaluationDate
             ? new Date(createGradeRecordDto.evaluationDate)
             : new Date(),
         },
@@ -49,23 +53,30 @@ export class GradeRecordsService {
           grade: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new BadRequestException('A grade record with these criteria already exists');
+        throw new BadRequestException(
+          'A grade record with these criteria already exists',
+        );
       }
       throw error;
     }
   }
 
-  async findAll(studentId?: number, subjectId?: number, gradeId?: number, academicPeriod?: string) {
-    const where: any = {};
-    
+  async findAll(
+    studentId?: number,
+    subjectId?: number,
+    gradeId?: number,
+    academicPeriod?: string,
+  ) {
+    const where: Record<string, any> = {};
+
     if (studentId) where.studentId = studentId;
     if (subjectId) where.subjectId = subjectId;
     if (gradeId) where.gradeId = gradeId;
     if (academicPeriod) where.academicPeriod = academicPeriod;
 
-    return await this.prisma.gradeRecord.findMany({
+    const result = await this.prisma.gradeRecord.findMany({
       where,
       include: {
         student: true,
@@ -76,6 +87,8 @@ export class GradeRecordsService {
         evaluationDate: 'desc',
       },
     });
+
+    return result;
   }
 
   async findOne(id: number) {
@@ -99,12 +112,12 @@ export class GradeRecordsService {
     const student = await this.prisma.student.findUnique({
       where: { studentId: studentId },
     });
-    
+
     if (!student) {
       throw new NotFoundException(`Student with ID ${studentId} not found`);
     }
 
-    const where: any = { studentId };
+    const where: Record<string, any> = { studentId };
     if (academicPeriod) where.academicPeriod = academicPeriod;
 
     return await this.prisma.gradeRecord.findMany({
@@ -113,10 +126,7 @@ export class GradeRecordsService {
         subject: true,
         grade: true,
       },
-      orderBy: [
-        { academicPeriod: 'desc' },
-        { evaluationDate: 'desc' },
-      ],
+      orderBy: [{ academicPeriod: 'desc' }, { evaluationDate: 'desc' }],
     });
   }
 
@@ -124,12 +134,12 @@ export class GradeRecordsService {
     const subject = await this.prisma.subject.findUnique({
       where: { subjectID: subjectId },
     });
-    
+
     if (!subject) {
       throw new NotFoundException(`Subject with ID ${subjectId} not found`);
     }
 
-    const where: any = { subjectId };
+    const where: Record<string, any> = { subjectId };
     if (academicPeriod) where.academicPeriod = academicPeriod;
 
     return await this.prisma.gradeRecord.findMany({
@@ -138,10 +148,7 @@ export class GradeRecordsService {
         student: true,
         grade: true,
       },
-      orderBy: [
-        { academicPeriod: 'desc' },
-        { evaluationDate: 'desc' },
-      ],
+      orderBy: [{ academicPeriod: 'desc' }, { evaluationDate: 'desc' }],
     });
   }
 
@@ -154,8 +161,8 @@ export class GradeRecordsService {
       throw new NotFoundException(`Grade Record with ID ${id} not found`);
     }
 
-    const updateData: any = { ...updateGradeRecordDto };
-    
+    const updateData: Record<string, any> = { ...updateGradeRecordDto };
+
     if (updateGradeRecordDto.evaluationDate) {
       updateData.evaluationDate = new Date(updateGradeRecordDto.evaluationDate);
     }
@@ -191,7 +198,7 @@ export class GradeRecordsService {
   }
 
   async getGradeStatistics(academicPeriod?: string) {
-    const where: any = {};
+    const where: Record<string, any> = {};
     if (academicPeriod) where.academicPeriod = academicPeriod;
 
     const stats = await this.prisma.gradeRecord.aggregate({

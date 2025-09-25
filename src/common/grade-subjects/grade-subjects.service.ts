@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateGradeSubjectDto } from './dto/create-grade-subject.dto';
 import { UpdateGradeSubjectDto } from './dto/update-grade-subject.dto';
@@ -14,7 +18,7 @@ export class GradeSubjectsService {
     const grade = await this.prisma.grade.findUnique({
       where: { gradeId: gradeId },
     });
-    
+
     if (!grade) {
       throw new NotFoundException(`Grade with ID ${gradeId} not found`);
     }
@@ -22,7 +26,7 @@ export class GradeSubjectsService {
     const subject = await this.prisma.subject.findUnique({
       where: { subjectID: subjectId },
     });
-    
+
     if (!subject) {
       throw new NotFoundException(`Subject with ID ${subjectId} not found`);
     }
@@ -35,17 +39,19 @@ export class GradeSubjectsService {
           subject: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new BadRequestException('This subject is already assigned to this grade');
+        throw new BadRequestException(
+          'This subject is already assigned to this grade',
+        );
       }
       throw error;
     }
   }
 
   async findAll(gradeId?: number, subjectId?: number) {
-    const where: any = {};
-    
+    const where: Record<string, any> = {};
+
     if (gradeId) where.gradeId = gradeId;
     if (subjectId) where.subjectId = subjectId;
 
@@ -71,7 +77,9 @@ export class GradeSubjectsService {
     });
 
     if (!gradeSubject) {
-      throw new NotFoundException(`Grade Subject assignment with ID ${id} not found`);
+      throw new NotFoundException(
+        `Grade Subject assignment with ID ${id} not found`,
+      );
     }
 
     return gradeSubject;
@@ -81,7 +89,7 @@ export class GradeSubjectsService {
     const grade = await this.prisma.grade.findUnique({
       where: { gradeId: gradeId },
     });
-    
+
     if (!grade) {
       throw new NotFoundException(`Grade with ID ${gradeId} not found`);
     }
@@ -101,7 +109,7 @@ export class GradeSubjectsService {
     const subject = await this.prisma.subject.findUnique({
       where: { subjectID: subjectId },
     });
-    
+
     if (!subject) {
       throw new NotFoundException(`Subject with ID ${subjectId} not found`);
     }
@@ -123,7 +131,9 @@ export class GradeSubjectsService {
     });
 
     if (!existingAssignment) {
-      throw new NotFoundException(`Grade Subject assignment with ID ${id} not found`);
+      throw new NotFoundException(
+        `Grade Subject assignment with ID ${id} not found`,
+      );
     }
 
     try {
@@ -135,9 +145,11 @@ export class GradeSubjectsService {
           subject: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new BadRequestException('This subject is already assigned to this grade');
+        throw new BadRequestException(
+          'This subject is already assigned to this grade',
+        );
       }
       throw error;
     }
@@ -149,7 +161,9 @@ export class GradeSubjectsService {
     });
 
     if (!existingAssignment) {
-      throw new NotFoundException(`Grade Subject assignment with ID ${id} not found`);
+      throw new NotFoundException(
+        `Grade Subject assignment with ID ${id} not found`,
+      );
     }
 
     return await this.prisma.gradeSubject.delete({
