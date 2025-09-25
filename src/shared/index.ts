@@ -7,5 +7,5 @@ export * from './interceptors/logging.interceptor';
 export * from './utils/common.utils';
 export * from './decorators';
 
-// Separate export for interfaces to avoid conflicts
-export { PaginatedResponse } from './interfaces/common.interfaces';
+// Separate export for interfaces to avoid conflicts (using export type)
+export type { PaginatedResponse } from './interfaces/common.interfaces';

@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
+import { PrismaService } from '@prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { BaseService } from '../../../shared/base/base.service';
-import { DateUtils, QueryUtils } from '../../../shared/utils/common.utils';
-import { StatusFilterDto, SearchDto } from '../../../shared/dto/base.dto';
-import { PaginatedResponse } from '../../../shared/interfaces/common.interfaces';
+import {
+  BaseService,
+  DateUtils,
+  QueryUtils,
+  StatusFilterDto,
+  SearchDto,
+  PaginatedResponse,
+} from '@shared';
 
 @Injectable()
 export class UsersService extends BaseService<

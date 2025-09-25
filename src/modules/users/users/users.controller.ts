@@ -22,8 +22,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { StatusFilterDto, SearchDto } from '../../../shared/dto/base.dto';
-import { PaginatedResponse } from '../../../shared/interfaces/common.interfaces';
+import { StatusFilterDto, SearchDto, PaginatedResponse } from '@shared';
 
 @ApiTags('Users')
 @Controller('users')

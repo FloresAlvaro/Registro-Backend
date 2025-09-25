@@ -17,7 +17,7 @@ export const PaginationParams = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const { page = 1, limit = 10 } = request.query;
-    
+
     return {
       page: parseInt(page, 10),
       limit: parseInt(limit, 10),
@@ -32,7 +32,7 @@ export const SortParams = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const { sortBy, sortOrder = 'asc' } = request.query;
-    
+
     return {
       sortBy,
       sortOrder: sortOrder as 'asc' | 'desc',
