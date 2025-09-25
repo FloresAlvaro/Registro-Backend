@@ -1,33 +1,46 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
-import { RolesModule } from './common/roles/roles.module';
-import { GradesModule } from './common/grades/grades.module';
-import { SubjectsModule } from './common/subjects/subjects.module';
-import { UsersModule } from './common/users/users.module';
-import { StudentsModule } from './common/students/students.module';
-import { TeachersModule } from './common/teachers/teachers.module';
-import { GradeRecordsModule } from './common/grade-records/grade-records.module';
-import { TeacherGradesModule } from './common/teacher-grades/teacher-grades.module';
-import { GradeSubjectsModule } from './common/grade-subjects/grade-subjects.module';
-import { TeacherSubjectsModule } from './common/teacher-subjects/teacher-subjects.module';
-import { StudentTeacherSubjectsModule } from './common/student-teacher-subjects/student-teacher-subjects.module';
+
+// Users Domain
+import { RolesModule } from './modules/users/roles/roles.module';
+import { UsersModule } from './modules/users/users/users.module';
+import { StudentsModule } from './modules/users/students/students.module';
+import { TeachersModule } from './modules/users/teachers/teachers.module';
+
+// Academic Domain
+import { GradesModule } from './modules/academic/grades/grades.module';
+import { SubjectsModule } from './modules/academic/subjects/subjects.module';
+import { GradeRecordsModule } from './modules/academic/grade-records/grade-records.module';
+import { GradeSubjectsModule } from './modules/academic/grade-subjects/grade-subjects.module';
+
+// Relationships Domain
+import { TeacherGradesModule } from './modules/relationships/teacher-grades/teacher-grades.module';
+import { TeacherSubjectsModule } from './modules/relationships/teacher-subjects/teacher-subjects.module';
+import { StudentTeacherSubjectsModule } from './modules/relationships/student-teacher-subjects/student-teacher-subjects.module';
+
+// Configuration
+import { appConfig } from './config/app.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [appConfig],
     }),
     PrismaModule,
+    // Users Domain
     RolesModule,
-    GradesModule,
-    SubjectsModule,
     UsersModule,
     StudentsModule,
     TeachersModule,
+    // Academic Domain
+    GradesModule,
+    SubjectsModule,
     GradeRecordsModule,
-    TeacherGradesModule,
     GradeSubjectsModule,
+    // Relationships Domain
+    TeacherGradesModule,
     TeacherSubjectsModule,
     StudentTeacherSubjectsModule,
   ],

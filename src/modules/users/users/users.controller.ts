@@ -22,6 +22,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { StatusFilterDto, SearchDto } from '../../../shared/dto/base.dto';
+import { PaginatedResponse } from '../../../shared/interfaces/common.interfaces';
 
 @ApiTags('Users')
 @Controller('users')
@@ -60,10 +62,22 @@ export class UsersController {
   findAll(
     @Query('status') status?: 'active' | 'inactive' | 'all',
   ): Promise<User[]> {
-    // Normalize the status parameter: if it's not 'active' or 'inactive', treat as 'all'
-    const normalizedStatus =
-      status && ['active', 'inactive'].includes(status) ? status : 'all';
-    return this.usersService.findAll(normalizedStatus);
+    return this.usersService.findAllByStatus(status);
+  }
+
+  @Get('search')
+  @ApiOperation({
+    summary: 'Search users with advanced filtering and pagination',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Users retrieved successfully with pagination',
+    type: 'PaginatedResponse<User>',
+  })
+  searchUsers(
+    @Query() filters: StatusFilterDto & SearchDto,
+  ): Promise<PaginatedResponse<User>> {
+    return this.usersService.findAllAdvanced(filters);
   }
 
   @Get(':id')

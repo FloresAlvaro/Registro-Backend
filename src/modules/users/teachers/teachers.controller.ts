@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -15,11 +16,14 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { TeachersService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { Teacher } from './entities/teacher.entity';
+import { StatusFilterDto, SearchDto } from '../dto/base.dto';
+import { PaginatedResponse } from '../interfaces/common.interfaces';
 
 @ApiTags('Teachers')
 @Controller('teachers')
@@ -51,6 +55,38 @@ export class TeachersController {
   })
   findAll(): Promise<Teacher[]> {
     return this.teachersService.findAll();
+  }
+
+  @Get('search')
+  @ApiOperation({
+    summary: 'Search teachers with advanced filtering and pagination',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    description: 'Search term for teacher names',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (default: 1)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page (default: 10)',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Teachers retrieved successfully with pagination',
+    type: 'PaginatedResponse<Teacher>',
+  })
+  searchTeachers(
+    @Query() filters: SearchDto,
+  ): Promise<PaginatedResponse<Teacher>> {
+    return this.teachersService.findAllAdvanced(filters);
   }
 
   @Get(':id')
