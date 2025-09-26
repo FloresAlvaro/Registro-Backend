@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { apiReference } from '@scalar/nestjs-api-reference';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -89,6 +90,50 @@ async function bootstrap() {
     ],
   });
 
+  // Setup Scalar API Documentation (Modern alternative)
+  app.use(
+    '/docs',
+    apiReference({
+      spec: {
+        content: document,
+      },
+      theme: 'fastify',
+      layout: 'modern',
+      showSidebar: true,
+      searchHotKey: 'k',
+      hideDownloadButton: false,
+      hideTestRequestButton: false,
+      metaData: {
+        title: 'Report Card API - Scalar Documentation',
+        description:
+          'Beautiful, interactive API documentation for the Academic Management System',
+        ogDescription:
+          'Comprehensive Academic Management System API Documentation',
+        ogImage: '/api-preview.png',
+      },
+      servers: [
+        {
+          url: 'http://localhost:3000',
+          description: 'Development server',
+        },
+        {
+          url: 'https://api.reportcard.com',
+          description: 'Production server',
+        },
+      ],
+      customCss: `
+        .scalar-api-reference {
+          --scalar-color-1: #ffffff;
+          --scalar-color-2: #ffffff;
+          --scalar-color-3: #ffffff;
+        }
+        .scalar-api-reference .scalar-card {
+          border-radius: 8px;
+        }
+      `,
+    }),
+  );
+
   // Start the application
   const port = process.env.PORT || 3000;
   await app.listen(port);
@@ -96,6 +141,7 @@ async function bootstrap() {
   console.log('🚀 Report Card API Server Started');
   console.log(`📡 Application running on: http://localhost:${port}`);
   console.log(`📚 Swagger documentation: http://localhost:${port}/api`);
+  console.log(`✨ Scalar documentation: http://localhost:${port}/docs`);
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
 }
 
