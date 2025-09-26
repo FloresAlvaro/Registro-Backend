@@ -34,10 +34,56 @@ export class GradeRecordsController {
   @ApiResponse({
     status: 201,
     description: 'Grade record created successfully',
+    examples: {
+      success: {
+        summary: 'Grade Record Created',
+        value: {
+          gradeRecordId: 1,
+          studentId: 15,
+          subjectId: 2,
+          gradeId: 10,
+          gradeValue: 4.5,
+          gradeDate: '2024-01-15T10:30:00.000Z',
+          period: 'Primer Período',
+          observations: 'Excelente desempeño en matemáticas',
+          createdAt: '2024-01-15T10:30:00.000Z',
+          updatedAt: '2024-01-15T10:30:00.000Z',
+          student: {
+            studentId: 15,
+            studentCode: 'EST2024001',
+            user: {
+              userFirstName: 'Ana',
+              userFirstLastName: 'Rodríguez',
+            },
+          },
+          subject: {
+            subjectId: 2,
+            subjectName: 'Matemáticas',
+            subjectCode: 'MAT001',
+          },
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 400,
     description: 'Bad request - validation failed or record already exists',
+    examples: {
+      validation: {
+        summary: 'Validation Error',
+        value: {
+          success: false,
+          message: [
+            'gradeValue must be between 0 and 5',
+            'studentId must exist',
+          ],
+          error: 'Bad Request',
+          statusCode: 400,
+          timestamp: '2024-01-15T10:30:00.000Z',
+          path: '/grade-records',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 404,

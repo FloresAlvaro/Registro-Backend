@@ -29,33 +29,144 @@ export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new role' })
-  @ApiBody({ type: CreateRoleDto })
+  @ApiOperation({
+    summary: 'Create a new role',
+    description: 'Create a new user role in the system',
+  })
+  @ApiBody({
+    type: CreateRoleDto,
+    description: 'Role creation data',
+    examples: {
+      adminRole: {
+        summary: 'Administrator Role',
+        value: {
+          roleName: 'Administrador',
+          roleDescription: 'Usuario con acceso completo al sistema',
+        },
+      },
+      teacherRole: {
+        summary: 'Teacher Role',
+        value: {
+          roleName: 'Profesor',
+          roleDescription: 'Usuario docente con acceso a gestión académica',
+        },
+      },
+      studentRole: {
+        summary: 'Student Role',
+        value: {
+          roleName: 'Estudiante',
+          roleDescription: 'Usuario estudiante con acceso limitado',
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Role created successfully',
     type: Role,
+    examples: {
+      success: {
+        summary: 'Role Created Successfully',
+        value: {
+          roleId: 4,
+          roleName: 'Administrador',
+          roleDescription: 'Usuario con acceso completo al sistema',
+          roleStatus: true,
+          createdAt: '2024-01-15T10:30:00.000Z',
+          updatedAt: '2024-01-15T10:30:00.000Z',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data',
+    examples: {
+      validation: {
+        summary: 'Validation Error',
+        value: {
+          success: false,
+          message: ['roleName must be unique', 'roleName must not be empty'],
+          error: 'Bad Request',
+          statusCode: 400,
+          timestamp: '2024-01-15T10:30:00.000Z',
+          path: '/roles',
+        },
+      },
+    },
   })
   create(@Body() createRoleDto: CreateRoleDto): Promise<Role> {
     return this.rolesService.create(createRoleDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all roles with optional status filter' })
+  @ApiOperation({
+    summary: 'Get all roles with optional status filter',
+    description: 'Retrieve all system roles with optional status filtering',
+  })
   @ApiQuery({
     name: 'status',
     required: false,
     enum: ['active', 'inactive', 'all'],
     description: 'Filter roles by status. Default: all',
+    example: 'active',
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Roles retrieved successfully',
     type: [Role],
+    examples: {
+      allRoles: {
+        summary: 'All System Roles',
+        value: [
+          {
+            roleId: 1,
+            roleName: 'Administrador',
+            roleDescription: 'Usuario con acceso completo al sistema',
+            roleStatus: true,
+            createdAt: '2024-01-01T08:00:00.000Z',
+            updatedAt: '2024-01-01T08:00:00.000Z',
+          },
+          {
+            roleId: 2,
+            roleName: 'Profesor',
+            roleDescription: 'Usuario docente con acceso a gestión académica',
+            roleStatus: true,
+            createdAt: '2024-01-01T08:00:00.000Z',
+            updatedAt: '2024-01-01T08:00:00.000Z',
+          },
+          {
+            roleId: 3,
+            roleName: 'Estudiante',
+            roleDescription: 'Usuario estudiante con acceso limitado',
+            roleStatus: true,
+            createdAt: '2024-01-01T08:00:00.000Z',
+            updatedAt: '2024-01-01T08:00:00.000Z',
+          },
+        ],
+      },
+      activeOnly: {
+        summary: 'Active Roles Only',
+        value: [
+          {
+            roleId: 1,
+            roleName: 'Administrador',
+            roleDescription: 'Usuario con acceso completo al sistema',
+            roleStatus: true,
+            createdAt: '2024-01-01T08:00:00.000Z',
+            updatedAt: '2024-01-01T08:00:00.000Z',
+          },
+          {
+            roleId: 2,
+            roleName: 'Profesor',
+            roleDescription: 'Usuario docente con acceso a gestión académica',
+            roleStatus: true,
+            createdAt: '2024-01-01T08:00:00.000Z',
+            updatedAt: '2024-01-01T08:00:00.000Z',
+          },
+        ],
+      },
+    },
   })
   findAll(
     @Query('status') status?: 'active' | 'inactive' | 'all',

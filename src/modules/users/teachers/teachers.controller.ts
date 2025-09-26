@@ -30,27 +30,149 @@ export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new teacher' })
-  @ApiBody({ type: CreateTeacherDto })
+  @ApiOperation({
+    summary: 'Create a new teacher',
+    description: 'Register a new teacher in the system',
+  })
+  @ApiBody({
+    type: CreateTeacherDto,
+    description: 'Teacher registration data',
+    examples: {
+      mathTeacher: {
+        summary: 'Mathematics Teacher Registration',
+        value: {
+          userId: 12,
+          teacherCode: 'PROF2024001',
+          teacherDepartment: 'Matemáticas',
+          teacherSpecialty: 'Álgebra y Cálculo',
+          teacherHireDate: '2024-01-15T00:00:00.000Z',
+        },
+      },
+      scienceTeacher: {
+        summary: 'Science Teacher Registration',
+        value: {
+          userId: 13,
+          teacherCode: 'PROF2024002',
+          teacherDepartment: 'Ciencias Naturales',
+          teacherSpecialty: 'Biología y Química',
+          teacherHireDate: '2024-02-01T00:00:00.000Z',
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Teacher created successfully',
     type: Teacher,
+    examples: {
+      success: {
+        summary: 'Teacher Created Successfully',
+        value: {
+          teacherId: 1,
+          userId: 12,
+          teacherCode: 'PROF2024001',
+          teacherDepartment: 'Matemáticas',
+          teacherSpecialty: 'Álgebra y Cálculo',
+          teacherHireDate: '2024-01-15T00:00:00.000Z',
+          createdAt: '2024-01-15T10:30:00.000Z',
+          updatedAt: '2024-01-15T10:30:00.000Z',
+          user: {
+            userId: 12,
+            userFirstName: 'Roberto',
+            userSecondName: 'Carlos',
+            userFirstLastName: 'Mendoza',
+            userSecondLastName: 'Silva',
+            userEmail: 'roberto.mendoza@school.edu.co',
+            userDateOfBirth: '1985-03-20T00:00:00.000Z',
+            userAddress: 'Av. Educadores 456, Ciudad',
+            userPhoneNumber: '+1987654321',
+            userRoleId: 2,
+            userStatus: true,
+          },
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data',
+    examples: {
+      validation: {
+        summary: 'Validation Error',
+        value: {
+          success: false,
+          message: [
+            'teacherCode must be unique',
+            'teacherDepartment must not be empty',
+          ],
+          error: 'Bad Request',
+          statusCode: 400,
+          timestamp: '2024-01-15T10:30:00.000Z',
+          path: '/teachers',
+        },
+      },
+    },
   })
   create(@Body() createTeacherDto: CreateTeacherDto): Promise<Teacher> {
     return this.teachersService.create(createTeacherDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all teachers' })
+  @ApiOperation({
+    summary: 'Get all teachers',
+    description: 'Retrieve all teachers with their user information',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Teachers retrieved successfully',
     type: [Teacher],
+    examples: {
+      success: {
+        summary: 'Teachers List',
+        value: [
+          {
+            teacherId: 1,
+            userId: 12,
+            teacherCode: 'PROF2024001',
+            teacherDepartment: 'Matemáticas',
+            teacherSpecialty: 'Álgebra y Cálculo',
+            teacherHireDate: '2024-01-15T00:00:00.000Z',
+            createdAt: '2024-01-15T10:30:00.000Z',
+            updatedAt: '2024-01-15T10:30:00.000Z',
+            user: {
+              userId: 12,
+              userFirstName: 'Roberto',
+              userSecondName: 'Carlos',
+              userFirstLastName: 'Mendoza',
+              userSecondLastName: 'Silva',
+              userEmail: 'roberto.mendoza@school.edu.co',
+              userRoleId: 2,
+              userStatus: true,
+            },
+          },
+          {
+            teacherId: 2,
+            userId: 13,
+            teacherCode: 'PROF2024002',
+            teacherDepartment: 'Ciencias Naturales',
+            teacherSpecialty: 'Biología y Química',
+            teacherHireDate: '2024-02-01T00:00:00.000Z',
+            createdAt: '2024-01-15T11:00:00.000Z',
+            updatedAt: '2024-01-15T11:00:00.000Z',
+            user: {
+              userId: 13,
+              userFirstName: 'Laura',
+              userSecondName: 'Patricia',
+              userFirstLastName: 'González',
+              userSecondLastName: 'Herrera',
+              userEmail: 'laura.gonzalez@school.edu.co',
+              userRoleId: 2,
+              userStatus: true,
+            },
+          },
+        ],
+      },
+    },
   })
   findAll(): Promise<Teacher[]> {
     return this.teachersService.findAll();

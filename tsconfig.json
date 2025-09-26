@@ -1,7 +1,10 @@
 {
+  "ts-node": {
+    "esm": false
+  },
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node",
+    // "moduleResolution": "node",
     "esModuleInterop": true,
     "isolatedModules": true,
     "declaration": true,

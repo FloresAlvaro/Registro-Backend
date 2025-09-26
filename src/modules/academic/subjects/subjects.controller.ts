@@ -29,16 +29,78 @@ export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new subject' })
-  @ApiBody({ type: CreateSubjectDto })
+  @ApiOperation({
+    summary: 'Create a new subject',
+    description: 'Create a new academic subject in the system',
+  })
+  @ApiBody({
+    type: CreateSubjectDto,
+    description: 'Subject creation data',
+    examples: {
+      mathSubject: {
+        summary: 'Mathematics Subject',
+        value: {
+          subjectName: 'Matemáticas',
+          subjectDescription: 'Matemáticas básicas y avanzadas',
+          subjectCode: 'MAT001',
+        },
+      },
+      scienceSubject: {
+        summary: 'Science Subject',
+        value: {
+          subjectName: 'Ciencias Naturales',
+          subjectDescription: 'Biología, Química y Física',
+          subjectCode: 'CIE001',
+        },
+      },
+      languageSubject: {
+        summary: 'Language Subject',
+        value: {
+          subjectName: 'Lengua Castellana',
+          subjectDescription: 'Gramática, literatura y comprensión lectora',
+          subjectCode: 'LEN001',
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Subject created successfully',
     type: Subject,
+    examples: {
+      success: {
+        summary: 'Subject Created Successfully',
+        value: {
+          subjectId: 4,
+          subjectName: 'Matemáticas',
+          subjectDescription: 'Matemáticas básicas y avanzadas',
+          subjectCode: 'MAT001',
+          subjectStatus: true,
+          createdAt: '2024-01-15T10:30:00.000Z',
+          updatedAt: '2024-01-15T10:30:00.000Z',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data',
+    examples: {
+      validation: {
+        summary: 'Validation Error',
+        value: {
+          success: false,
+          message: [
+            'subjectCode must be unique',
+            'subjectName must not be empty',
+          ],
+          error: 'Bad Request',
+          statusCode: 400,
+          timestamp: '2024-01-15T10:30:00.000Z',
+          path: '/subjects',
+        },
+      },
+    },
   })
   create(@Body() createSubjectDto: CreateSubjectDto): Promise<Subject> {
     return this.subjectsService.create(createSubjectDto);

@@ -29,16 +29,78 @@ export class GradesController {
   constructor(private readonly gradesService: GradesService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new grade' })
-  @ApiBody({ type: CreateGradeDto })
+  @ApiOperation({
+    summary: 'Create a new grade',
+    description: 'Create a new academic grade level in the system',
+  })
+  @ApiBody({
+    type: CreateGradeDto,
+    description: 'Grade creation data',
+    examples: {
+      elementaryGrade: {
+        summary: 'Elementary Grade',
+        value: {
+          gradeName: '1ro Primaria',
+          gradeDescription: 'Primer grado de educación primaria',
+          gradeLevel: 1,
+        },
+      },
+      middleSchoolGrade: {
+        summary: 'Middle School Grade',
+        value: {
+          gradeName: '6to Básica',
+          gradeDescription: 'Sexto grado de educación básica',
+          gradeLevel: 6,
+        },
+      },
+      highSchoolGrade: {
+        summary: 'High School Grade',
+        value: {
+          gradeName: '10mo Bachillerato',
+          gradeDescription: 'Décimo grado de bachillerato',
+          gradeLevel: 10,
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Grade created successfully',
     type: Grade,
+    examples: {
+      success: {
+        summary: 'Grade Created Successfully',
+        value: {
+          gradeId: 4,
+          gradeName: '10mo Bachillerato',
+          gradeDescription: 'Décimo grado de bachillerato',
+          gradeLevel: 10,
+          gradeStatus: true,
+          createdAt: '2024-01-15T10:30:00.000Z',
+          updatedAt: '2024-01-15T10:30:00.000Z',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data',
+    examples: {
+      validation: {
+        summary: 'Validation Error',
+        value: {
+          success: false,
+          message: [
+            'gradeName must be unique',
+            'gradeLevel must be a positive number',
+          ],
+          error: 'Bad Request',
+          statusCode: 400,
+          timestamp: '2024-01-15T10:30:00.000Z',
+          path: '/grades',
+        },
+      },
+    },
   })
   create(@Body() createGradeDto: CreateGradeDto): Promise<Grade> {
     return this.gradesService.create(createGradeDto);
