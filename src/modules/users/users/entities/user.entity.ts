@@ -30,6 +30,12 @@ export class User {
   })
   userEmail: string;
 
+  @ApiProperty({
+    description: 'User identification number (Cédula de Identidad)',
+    example: 12345678,
+  })
+  userCI: number;
+
   @ApiProperty({ description: 'User password', example: 'hashedPassword123' })
   userPassword: string;
 

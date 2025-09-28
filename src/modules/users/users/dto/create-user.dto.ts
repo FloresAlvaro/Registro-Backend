@@ -9,6 +9,8 @@ import {
   IsPositive,
   MinLength,
   MaxLength,
+  Min,
+  Max,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -67,6 +69,18 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MaxLength(255)
   userEmail: string;
+
+  @ApiProperty({
+    description: 'User identification number (Cédula de Identidad)',
+    example: 12345678,
+    minimum: 1000000,
+    maximum: 999999999,
+  })
+  @IsInt()
+  @IsPositive()
+  @Min(1000000)
+  @Max(999999999)
+  userCI: number;
 
   @ApiProperty({
     description: 'User password',

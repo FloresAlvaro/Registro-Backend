@@ -9,4 +9,25 @@ export class Teacher {
     example: 1,
   })
   userId: number;
+
+  @ApiProperty({
+    description: 'Years of teaching experience',
+    example: 5,
+    minimum: 0,
+  })
+  teacherExperienceYears: number;
+
+  @ApiProperty({
+    description: 'Professional teaching license number',
+    example: 'LIC-2024-001234',
+  })
+  teacherLicenseNumber: string;
+
+  @ApiProperty({
+    description: 'Weekly teaching hours assigned',
+    example: 40,
+    minimum: 1,
+    maximum: 60,
+  })
+  teacherHours: number;
 }

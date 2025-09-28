@@ -53,20 +53,21 @@ model Subject {
 }
 
 model User {
-  userId               Int       @id @default(autoincrement())
-  userFirstName        String    @db.VarChar(255)
-  userSecondName       String?   @db.VarChar(255)
-  userFirstLastName    String    @db.VarChar(255)
-  userSecondLastName   String?   @db.VarChar(255)
-  userEmail            String    @unique @db.VarChar(255)
-  userPassword         String    @db.VarChar(255)
-  userDateOfBirth      DateTime  @db.Date
-  userAddress          String?   @db.Text
-  userPhoneNumber      String?   @db.VarChar(20)
-  userRoleId           Int
-  userStatus           Boolean   @default(true)
-  createdAt            DateTime? @default(now()) @db.Timestamp
-  updatedAt            DateTime? @default(now()) @updatedAt @db.Timestamp
+  userId             Int       @id @default(autoincrement())
+  userFirstName      String    @db.VarChar(255)
+  userSecondName     String?   @db.VarChar(255)
+  userFirstLastName  String    @db.VarChar(255)
+  userSecondLastName String?   @db.VarChar(255)
+  userEmail          String    @unique @db.VarChar(255)
+  userCI             Int       @unique
+  userPassword       String    @db.VarChar(255)
+  userDateOfBirth    DateTime  @db.Date
+  userAddress        String?   @db.Text
+  userPhoneNumber    String?   @db.VarChar(20)
+  userRoleId         Int
+  userStatus         Boolean   @default(true)
+  createdAt          DateTime? @default(now()) @db.Timestamp
+  updatedAt          DateTime? @default(now()) @updatedAt @db.Timestamp
 
   // Relations
   role    Role     @relation(fields: [userRoleId], references: [roleId])
@@ -74,6 +75,7 @@ model User {
   teacher Teacher?
 
   @@index([userRoleId], map: "user_userroleid_index")
+  @@index([userCI], map: "user_userci_index")
   @@map("User")
 }
 
@@ -94,8 +96,11 @@ model Student {
 }
 
 model Teacher {
-  teacherId Int @id @default(autoincrement())
-  userId    Int @unique
+  teacherId              Int    @id @default(autoincrement())
+  userId                 Int    @unique
+  teacherExperienceYears Int
+  teacherLicenseNumber   String @unique @db.VarChar(50)
+  teacherHours           Int
 
   // Relations
   user                  User                    @relation(fields: [userId], references: [userId])
@@ -104,6 +109,7 @@ model Teacher {
   studentTeacherSubject StudentTeacherSubject[]
 
   @@index([userId], map: "teacher_userid_index")
+  @@index([teacherLicenseNumber], map: "teacher_license_index")
   @@map("Teacher")
 }
 
@@ -153,19 +159,19 @@ model TeacherSubject {
 }
 
 model GradeRecord {
-  gradeRecordId    Int       @id @default(autoincrement())
-  studentId        Int
-  subjectId        Int
-  gradeId          Int
-  score            Decimal   @db.Decimal(5, 2)
-  maxScore         Decimal   @default(100.00) @db.Decimal(5, 2)
-  gradeType        String    @db.VarChar(50)
-  evaluationDate   DateTime  @default(now()) @db.Date
-  academicPeriod   String    @db.VarChar(50)
-  comments         String?   @db.Text
-  recordStatus     Boolean   @default(true)
-  createdAt        DateTime? @default(now()) @db.Timestamp
-  updatedAt        DateTime? @default(now()) @updatedAt @db.Timestamp
+  gradeRecordId  Int       @id @default(autoincrement())
+  studentId      Int
+  subjectId      Int
+  gradeId        Int
+  score          Decimal   @db.Decimal(5, 2)
+  maxScore       Decimal   @default(100.00) @db.Decimal(5, 2)
+  gradeType      String    @db.VarChar(50)
+  evaluationDate DateTime  @default(now()) @db.Date
+  academicPeriod String    @db.VarChar(50)
+  comments       String?   @db.Text
+  recordStatus   Boolean   @default(true)
+  createdAt      DateTime? @default(now()) @db.Timestamp
+  updatedAt      DateTime? @default(now()) @updatedAt @db.Timestamp
 
   // Relations
   student Student @relation(fields: [studentId], references: [studentId])
