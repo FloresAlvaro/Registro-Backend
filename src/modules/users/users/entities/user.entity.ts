@@ -1,7 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class User {
-  @ApiProperty({ description: 'User ID', example: 1 })
+  @ApiProperty({
+    description: 'User ID',
+    example: 1,
+  })
   userId: number;
 
   @ApiProperty({ description: 'User first name', example: 'Juan' })
@@ -59,7 +62,10 @@ export class User {
   })
   userPhoneNumber?: string | null;
 
-  @ApiProperty({ description: 'User role ID', example: 1 })
+  @ApiProperty({
+    description: 'User role ID',
+    example: 2,
+  })
   userRoleId: number;
 
   @ApiProperty({

@@ -1,7 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Teacher {
-  @ApiProperty({ description: 'Teacher ID', example: 1 })
+  @ApiProperty({
+    description: 'Teacher ID',
+    example: 1,
+  })
   teacherId: number;
 
   @ApiProperty({

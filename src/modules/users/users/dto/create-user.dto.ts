@@ -5,12 +5,13 @@ import {
   IsNotEmpty,
   IsOptional,
   IsDateString,
-  IsInt,
-  IsPositive,
+  IsUUID,
   MinLength,
   MaxLength,
   Min,
   Max,
+  IsInt,
+  IsPositive,
 } from 'class-validator';
 
 export class CreateUserDto {
