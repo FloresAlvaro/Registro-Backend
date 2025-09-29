@@ -10,7 +10,8 @@ echo "🚀 Instalando triggers para el sistema educativo..."
 DB_HOST=${DB_HOST:-"localhost"}
 DB_PORT=${DB_PORT:-5432}
 DB_NAME=${DB_NAME:-"DBService"}
-DB_USER=${DB_USER:-"postgres"}
+DB_USER=${DB_USER:-"admin"}
+export PGPASSWORD=${PGPASSWORD:-"password"}
 
 # Función para ejecutar SQL con manejo de errores
 execute_sql() {
@@ -32,6 +33,7 @@ if ! psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
     echo "  DB_PORT=$DB_PORT" 
     echo "  DB_NAME=$DB_NAME"
     echo "  DB_USER=$DB_USER"
+    echo "  PGPASSWORD=****** (configurada)"
     exit 1
 fi
 

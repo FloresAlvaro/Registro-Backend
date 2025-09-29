@@ -9,9 +9,10 @@ REM Variables de configuración (ajusta según tu configuración)
 set DB_HOST=localhost
 set DB_PORT=5432
 set DB_NAME=DBService
-set DB_USER=postgres
+set DB_USER=admin
+set PGPASSWORD=password
 
-echo 🔍 Verificando conexión a la base de datos...
+echo 🔍 Verificando conexion a la base de datos...
 
 REM Verificar que PostgreSQL esté disponible
 psql -h %DB_HOST% -p %DB_PORT% -U %DB_USER% -d %DB_NAME% -c "SELECT 1;" > nul 2>&1
@@ -22,6 +23,7 @@ if %errorlevel% neq 0 (
     echo   DB_PORT=%DB_PORT%
     echo   DB_NAME=%DB_NAME%
     echo   DB_USER=%DB_USER%
+    echo   PGPASSWORD=****** (configurada)
     echo.
     echo Asegúrate de que PostgreSQL esté ejecutándose y las credenciales sean correctas.
     pause
