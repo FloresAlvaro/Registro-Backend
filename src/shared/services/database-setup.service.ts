@@ -18,18 +18,18 @@ export class DatabaseSetupService implements OnModuleInit {
     try {
       const triggersPath = path.join(__dirname, '../../sql/triggers.sql');
       const triggersSQL = fs.readFileSync(triggersPath, 'utf8');
-      
+
       // Ejecutar cada statement por separado
       const statements = triggersSQL
         .split(';')
-        .filter(stmt => stmt.trim().length > 0);
+        .filter((stmt) => stmt.trim().length > 0);
 
       for (const statement of statements) {
         if (statement.trim()) {
           await this.prisma.$executeRawUnsafe(statement + ';');
         }
       }
-      
+
       console.log('✅ Triggers creados exitosamente');
     } catch (error) {
       console.error('❌ Error creando triggers:', error);

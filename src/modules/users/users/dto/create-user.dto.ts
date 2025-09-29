@@ -5,7 +5,6 @@ import {
   IsNotEmpty,
   IsOptional,
   IsDateString,
-  IsUUID,
   MinLength,
   MaxLength,
   Min,
