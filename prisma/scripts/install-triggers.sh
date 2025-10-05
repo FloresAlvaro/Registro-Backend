@@ -1,60 +1,60 @@
 #!/bin/bash
 
 # ===============================================
-# INSTALACIÓN DE TRIGGERS - SISTEMA EDUCATIVO
+# TRIGGERS INSTALLATION - EDUCATIONAL SYSTEM
 # ===============================================
 
-echo "🚀 Instalando triggers para el sistema educativo..."
+echo "🚀 Installing triggers for the educational system..."
 
-# Variables de configuración
+# Configuration variables
 DB_HOST=${DB_HOST:-"localhost"}
 DB_PORT=${DB_PORT:-5432}
 DB_NAME=${DB_NAME:-"DBService"}
 DB_USER=${DB_USER:-"admin"}
 export PGPASSWORD=${PGPASSWORD:-"password"}
 
-# Función para ejecutar SQL con manejo de errores
+# Function to execute SQL with error handling
 execute_sql() {
-    echo "📝 Ejecutando: $1"
+    echo "📝 Executing: $1"
     if psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$1"; then
-        echo "✅ $1 ejecutado exitosamente"
+        echo "✅ $1 executed successfully"
     else
-        echo "❌ Error ejecutando $1"
+        echo "❌ Error executing $1"
         exit 1
     fi
 }
 
-# Verificar que PostgreSQL esté disponible
-echo "🔍 Verificando conexión a la base de datos..."
+# Verify that PostgreSQL is available
+echo "🔍 Verifying database connection..."
 if ! psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;" > /dev/null 2>&1; then
-    echo "❌ No se pudo conectar a la base de datos PostgreSQL"
-    echo "Verifica las variables de entorno:"
+    echo "❌ Could not connect to PostgreSQL database"
+    echo "Verify the environment variables:"
     echo "  DB_HOST=$DB_HOST"
     echo "  DB_PORT=$DB_PORT" 
     echo "  DB_NAME=$DB_NAME"
     echo "  DB_USER=$DB_USER"
-    echo "  PGPASSWORD=****** (configurada)"
+    echo "  PGPASSWORD=****** (configured)"
     exit 1
 fi
 
-echo "✅ Conexión a base de datos exitosa"
+echo "✅ Database connection successful"
 
-# Ejecutar el script de triggers
+# Execute the triggers script
 execute_sql "prisma/sql/triggers.sql"
 
 echo ""
-echo "🎉 ¡Triggers instalados exitosamente!"
+echo "🎉 Triggers successfully installed!"
 echo ""
-echo "📋 Funcionalidades instaladas:"
-echo "  ✅ Auto-actualización de timestamps (updatedAt)"
-echo "  ✅ Auditoría completa de usuarios"
-echo "  ✅ Validación de calificaciones"
-echo "  ✅ Soft delete para usuarios"
-echo "  ✅ Validación de CI y email"
-echo "  ✅ Validación de datos de profesores"
-echo "  ✅ Prevención de asignaciones duplicadas"
-echo "  ✅ Validación de integridad referencial"
+echo "📋 Installed functionalities:"
+echo "  ✅ Auto-update timestamps (updatedAt)"
+echo "  ✅ Complete user auditing"
+echo "  ✅ Grade validation"
+echo "  ✅ Soft delete for users"
+echo "  ✅ CI and email validation"
+echo "  ✅ Teacher data validation"
+echo "  ✅ Duplicate assignment prevention"
+echo "  ✅ Referential integrity validation"
 echo ""
-echo "📊 Para verificar la instalación:"
+echo "📊 To verify installation:"
 echo "  psql -d $DB_NAME -c \"SELECT routine_name FROM information_schema.routines WHERE routine_type='FUNCTION' AND routine_name LIKE '%validate%' OR routine_name LIKE '%audit%';\""
 echo ""

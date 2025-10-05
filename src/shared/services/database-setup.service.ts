@@ -8,7 +8,7 @@ export class DatabaseSetupService implements OnModuleInit {
   constructor(private prisma: PrismaService) {}
 
   async onModuleInit() {
-    // Ejecutar triggers solo en desarrollo/primera vez
+    // Execute triggers only in development/first time
     if (process.env.NODE_ENV === 'development') {
       await this.setupTriggers();
     }
@@ -19,7 +19,7 @@ export class DatabaseSetupService implements OnModuleInit {
       const triggersPath = path.join(__dirname, '../../sql/triggers.sql');
       const triggersSQL = fs.readFileSync(triggersPath, 'utf8');
 
-      // Ejecutar cada statement por separado
+      // Execute each statement separately
       const statements = triggersSQL
         .split(';')
         .filter((stmt) => stmt.trim().length > 0);
@@ -30,13 +30,13 @@ export class DatabaseSetupService implements OnModuleInit {
         }
       }
 
-      console.log('✅ Triggers creados exitosamente');
+      console.log('✅ Triggers created successfully');
     } catch (error) {
-      console.error('❌ Error creando triggers:', error);
+      console.error('❌ Error creating triggers:', error);
     }
   }
 
-  // Métodos para triggers específicos
+  // Methods for specific triggers
   async createUserAuditTrigger() {
     await this.prisma.$executeRaw`
       CREATE OR REPLACE FUNCTION user_audit_trigger()
@@ -65,6 +65,6 @@ export class DatabaseSetupService implements OnModuleInit {
       DROP FUNCTION IF EXISTS validate_grade_score();
       DROP FUNCTION IF EXISTS soft_delete_user();
     `;
-    console.log('🗑️ Todos los triggers eliminados');
+    console.log('🗑️ All triggers removed');
   }
 }

@@ -40,22 +40,22 @@ export class RolesController {
       adminRole: {
         summary: 'Administrator Role',
         value: {
-          roleName: 'Administrador',
-          roleDescription: 'Usuario con acceso completo al sistema',
+          roleName: 'Administrator',
+          roleDescription: 'User with full system access',
         },
       },
       teacherRole: {
         summary: 'Teacher Role',
         value: {
-          roleName: 'Profesor',
-          roleDescription: 'Usuario docente con acceso a gestión académica',
+          roleName: 'Teacher',
+          roleDescription: 'Teacher user with access to academic management',
         },
       },
       studentRole: {
         summary: 'Student Role',
         value: {
-          roleName: 'Estudiante',
-          roleDescription: 'Usuario estudiante con acceso limitado',
+          roleName: 'Student',
+          roleDescription: 'Student user with limited access',
         },
       },
     },
@@ -69,8 +69,8 @@ export class RolesController {
         summary: 'Role Created Successfully',
         value: {
           roleId: 4,
-          roleName: 'Administrador',
-          roleDescription: 'Usuario con acceso completo al sistema',
+          roleName: 'Administrator',
+          roleDescription: 'User with full system access',
           roleStatus: true,
           createdAt: '2024-01-15T10:30:00.000Z',
           updatedAt: '2024-01-15T10:30:00.000Z',
