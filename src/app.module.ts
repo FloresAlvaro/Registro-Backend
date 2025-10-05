@@ -1,33 +1,50 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { PrismaModule } from './prisma/prisma.module';
-import { RolesModule } from './common/roles/roles.module';
-import { GradesModule } from './common/grades/grades.module';
-import { SubjectsModule } from './common/subjects/subjects.module';
-import { UsersModule } from './common/users/users.module';
-import { StudentsModule } from './common/students/students.module';
-import { TeachersModule } from './common/teachers/teachers.module';
-import { GradeRecordsModule } from './common/grade-records/grade-records.module';
-import { TeacherGradesModule } from './common/teacher-grades/teacher-grades.module';
-import { GradeSubjectsModule } from './common/grade-subjects/grade-subjects.module';
-import { TeacherSubjectsModule } from './common/teacher-subjects/teacher-subjects.module';
-import { StudentTeacherSubjectsModule } from './common/student-teacher-subjects/student-teacher-subjects.module';
+import { PrismaModule } from '@prisma';
+
+// Domain modules using path mappings
+import {
+  RolesModule,
+  UsersModule,
+  StudentsModule,
+  TeachersModule,
+} from '@users';
+
+import {
+  GradesModule,
+  SubjectsModule,
+  GradeRecordsModule,
+  GradeSubjectsModule,
+} from '@academic';
+
+import {
+  TeacherGradesModule,
+  TeacherSubjectsModule,
+  StudentTeacherSubjectsModule,
+} from '@relationships';
+
+// Configuration
+import { appConfig } from '@config/app.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [appConfig],
     }),
     PrismaModule,
+    // Users Domain
     RolesModule,
-    GradesModule,
-    SubjectsModule,
     UsersModule,
     StudentsModule,
     TeachersModule,
+    // Academic Domain
+    GradesModule,
+    SubjectsModule,
     GradeRecordsModule,
-    TeacherGradesModule,
     GradeSubjectsModule,
+    // Relationships Domain
+    TeacherGradesModule,
     TeacherSubjectsModule,
     StudentTeacherSubjectsModule,
   ],
