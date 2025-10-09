@@ -1,0 +1,63 @@
+{
+  "name": "Educational System API Tests",
+  "description": "Comprehensive testing suite for the educational management system",
+  "baseUrl": "http://localhost:3000",
+  "testSprite": {
+    "apiKey": "sk-user-8DTMkSowSI5r4bS1KGc8EhaHAvQukAUfPBLuz08KnVhMEmn5hAFB1Dw22aUsqetSkjMI_Pwq336XTeM6XVcrY4cy4UXRHxVjb4XqPp5J61f1lsuXfmcQdbLO9qkXB4XagQ4",
+    "testSuites": [
+      {
+        "name": "Roles API Tests",
+        "module": "users/roles",
+        "endpoints": [
+          "GET /roles",
+          "POST /roles",
+          "GET /roles/:id",
+          "PATCH /roles/:id",
+          "DELETE /roles/:id"
+        ],
+        "priority": "high"
+      },
+      {
+        "name": "Users API Tests", 
+        "module": "users/users",
+        "endpoints": [
+          "GET /users",
+          "POST /users",
+          "GET /users/:id",
+          "PATCH /users/:id",
+          "DELETE /users/:id"
+        ],
+        "priority": "high"
+      },
+      {
+        "name": "Teachers API Tests",
+        "module": "users/teachers", 
+        "endpoints": [
+          "GET /teachers",
+          "POST /teachers",
+          "GET /teachers/:id",
+          "PATCH /teachers/:id",
+          "DELETE /teachers/:id"
+        ],
+        "priority": "medium"
+      },
+      {
+        "name": "Students API Tests",
+        "module": "users/students",
+        "endpoints": [
+          "GET /students", 
+          "POST /students",
+          "GET /students/:id",
+          "PATCH /students/:id",
+          "DELETE /students/:id"
+        ],
+        "priority": "medium"
+      }
+    ],
+    "database": {
+      "triggers": true,
+      "validation": true,
+      "auditLogs": true
+    }
+  }
+}

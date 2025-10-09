@@ -1,0 +1,82 @@
+{
+  "timestamp": "2025-10-09T03:40:12.158Z",
+  "testSuites": [
+    "roles.e2e-spec.ts",
+    "users.e2e-spec.ts",
+    "database.e2e-spec.ts"
+  ],
+  "configuration": {
+    "apiKey": "sk-user-8DTMkSowSI5r...",
+    "baseUrl": "http://localhost:3000",
+    "timeout": 30000
+  },
+  "results": {
+    "roles": {
+      "total": 11,
+      "passed": 10,
+      "failed": 1,
+      "skipped": 0,
+      "duration": 5237,
+      "testCases": [
+        "should create a new administrator role",
+        "should create a teacher role",
+        "should validate required fields",
+        "should return all roles",
+        "should filter active roles only",
+        "should return specific role by ID",
+        "should return 404 for non-existent role",
+        "should update role successfully",
+        "should soft delete role successfully",
+        "should create role with audit timestamps",
+        "should prevent duplicate role names"
+      ]
+    },
+    "users": {
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "duration": 1725,
+      "testCases": [
+        "should create a new administrator user",
+        "should create a teacher user",
+        "should create a student user",
+        "should validate required fields",
+        "should prevent duplicate email addresses",
+        "should prevent duplicate CI numbers",
+        "should return all users",
+        "should filter users by role",
+        "should filter active users only",
+        "should return specific user by ID",
+        "should return 404 for non-existent user",
+        "should update user information",
+        "should soft delete user successfully",
+        "should validate email format",
+        "should validate CI number format",
+        "should create user with proper audit timestamps",
+        "should validate birth date format"
+      ]
+    },
+    "database": {
+      "total": 12,
+      "passed": 11,
+      "failed": 1,
+      "skipped": 0,
+      "duration": 4827,
+      "testCases": [
+        "should auto-update timestamps on record modification",
+        "should validate user data integrity on creation",
+        "should prevent deletion of roles with associated users",
+        "should maintain audit log for user changes",
+        "should validate email uniqueness across system",
+        "should validate grade score ranges in grade records",
+        "should prevent soft-deleted users from logging in",
+        "should validate teacher experience years constraint",
+        "should validate student grade level assignment",
+        "should maintain referential integrity between modules",
+        "should handle multiple concurrent role creations",
+        "should efficiently query large datasets"
+      ]
+    }
+  }
+}
