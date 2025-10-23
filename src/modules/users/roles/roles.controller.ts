@@ -173,9 +173,35 @@ export class RolesController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a role by ID' })
+  @ApiOperation({
+    summary: 'Update a role by ID',
+    description: 'Update role name and/or status. All fields are optional.',
+  })
   @ApiParam({ name: 'id', description: 'Role ID' })
-  @ApiBody({ type: UpdateRoleDto })
+  @ApiBody({
+    type: UpdateRoleDto,
+    examples: {
+      updateName: {
+        summary: 'Update only role name',
+        value: {
+          roleName: 'Super Administrator',
+        },
+      },
+      updateStatus: {
+        summary: 'Update only role status',
+        value: {
+          roleStatus: false,
+        },
+      },
+      updateBoth: {
+        summary: 'Update both name and status',
+        value: {
+          roleName: 'Senior Teacher',
+          roleStatus: true,
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Role updated successfully',
@@ -214,21 +240,5 @@ export class RolesController {
   })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Role> {
     return this.rolesService.remove(id);
-  }
-
-  @Patch(':id/toggle-status')
-  @ApiOperation({ summary: 'Toggle the status of a role (active/inactive)' })
-  @ApiParam({ name: 'id', description: 'Role ID' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Role status toggled successfully',
-    type: Role,
-  })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Role not found',
-  })
-  toggleStatus(@Param('id', ParseIntPipe) id: number): Promise<Role> {
-    return this.rolesService.toggleStatus(id);
   }
 }

@@ -61,13 +61,4 @@ export class RolesService {
       data: { roleStatus: false },
     });
   }
-
-  async toggleStatus(id: number): Promise<Role> {
-    const role = await this.findOne(id);
-
-    return this.prisma.role.update({
-      where: { roleId: id },
-      data: { roleStatus: !role.roleStatus },
-    });
-  }
 }

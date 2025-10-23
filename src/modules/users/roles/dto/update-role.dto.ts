@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, MaxLength, MinLength } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  MaxLength,
+  MinLength,
+  IsBoolean,
+} from 'class-validator';
 
 export class UpdateRoleDto {
   @ApiProperty({
@@ -14,4 +20,13 @@ export class UpdateRoleDto {
   @MinLength(1)
   @MaxLength(255)
   roleName?: string;
+
+  @ApiProperty({
+    description: 'The status of the role',
+    example: true,
+    required: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  roleStatus?: boolean;
 }
