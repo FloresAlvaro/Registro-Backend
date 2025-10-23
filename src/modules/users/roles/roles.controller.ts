@@ -41,21 +41,18 @@ export class RolesController {
         summary: 'Administrator Role',
         value: {
           roleName: 'Administrator',
-          roleDescription: 'User with full system access',
         },
       },
       teacherRole: {
         summary: 'Teacher Role',
         value: {
           roleName: 'Teacher',
-          roleDescription: 'Teacher user with access to academic management',
         },
       },
       studentRole: {
         summary: 'Student Role',
         value: {
           roleName: 'Student',
-          roleDescription: 'Student user with limited access',
         },
       },
     },
@@ -70,10 +67,7 @@ export class RolesController {
         value: {
           roleId: 4,
           roleName: 'Administrator',
-          roleDescription: 'User with full system access',
           roleStatus: true,
-          createdAt: '2024-01-15T10:30:00.000Z',
-          updatedAt: '2024-01-15T10:30:00.000Z',
         },
       },
     },
@@ -122,26 +116,17 @@ export class RolesController {
           {
             roleId: 1,
             roleName: 'Administrador',
-            roleDescription: 'Usuario con acceso completo al sistema',
             roleStatus: true,
-            createdAt: '2024-01-01T08:00:00.000Z',
-            updatedAt: '2024-01-01T08:00:00.000Z',
           },
           {
             roleId: 2,
             roleName: 'Profesor',
-            roleDescription: 'Usuario docente con acceso a gestión académica',
             roleStatus: true,
-            createdAt: '2024-01-01T08:00:00.000Z',
-            updatedAt: '2024-01-01T08:00:00.000Z',
           },
           {
             roleId: 3,
             roleName: 'Estudiante',
-            roleDescription: 'Usuario estudiante con acceso limitado',
             roleStatus: true,
-            createdAt: '2024-01-01T08:00:00.000Z',
-            updatedAt: '2024-01-01T08:00:00.000Z',
           },
         ],
       },
@@ -151,18 +136,12 @@ export class RolesController {
           {
             roleId: 1,
             roleName: 'Administrador',
-            roleDescription: 'Usuario con acceso completo al sistema',
             roleStatus: true,
-            createdAt: '2024-01-01T08:00:00.000Z',
-            updatedAt: '2024-01-01T08:00:00.000Z',
           },
           {
             roleId: 2,
             roleName: 'Profesor',
-            roleDescription: 'Usuario docente con acceso a gestión académica',
             roleStatus: true,
-            createdAt: '2024-01-01T08:00:00.000Z',
-            updatedAt: '2024-01-01T08:00:00.000Z',
           },
         ],
       },
@@ -218,11 +197,15 @@ export class RolesController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a role by ID' })
+  @ApiOperation({
+    summary: 'Soft delete a role by ID',
+    description:
+      'Deactivate a role by setting its status to false (soft delete)',
+  })
   @ApiParam({ name: 'id', description: 'Role ID' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Role deleted successfully',
+    description: 'Role deactivated successfully (soft delete)',
     type: Role,
   })
   @ApiResponse({

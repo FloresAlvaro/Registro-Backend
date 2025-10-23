@@ -55,8 +55,10 @@ export class RolesService {
   async remove(id: number): Promise<Role> {
     await this.findOne(id); // This will throw NotFoundException if not found
 
-    return this.prisma.role.delete({
+    // Soft delete: set roleStatus to false instead of physical deletion
+    return this.prisma.role.update({
       where: { roleId: id },
+      data: { roleStatus: false },
     });
   }
 
