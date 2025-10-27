@@ -58,17 +58,10 @@ export class SubjectsService {
   async remove(id: number): Promise<Subject> {
     await this.findOne(id); // This will throw NotFoundException if not found
 
-    return this.prisma.subject.delete({
-      where: { subjectID: id },
-    });
-  }
-
-  async toggleStatus(id: number): Promise<Subject> {
-    const subject = await this.findOne(id);
-
+    // Soft delete: set subjectStatus to false instead of physical deletion
     return this.prisma.subject.update({
       where: { subjectID: id },
-      data: { subjectStatus: !subject.subjectStatus },
+      data: { subjectStatus: false },
     });
   }
 }

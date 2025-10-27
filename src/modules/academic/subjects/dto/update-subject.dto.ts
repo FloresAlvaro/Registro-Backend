@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, MaxLength, MinLength } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  MaxLength,
+  MinLength,
+  IsBoolean,
+} from 'class-validator';
 
 export class UpdateSubjectDto {
   @ApiProperty({
@@ -27,4 +33,13 @@ export class UpdateSubjectDto {
   @MinLength(1)
   @MaxLength(255)
   subjectDescription?: string;
+
+  @ApiProperty({
+    description: 'The status of the subject',
+    example: true,
+    required: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  subjectStatus?: boolean;
 }

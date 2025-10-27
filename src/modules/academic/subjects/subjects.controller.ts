@@ -145,9 +145,44 @@ export class SubjectsController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a subject by ID' })
+  @ApiOperation({
+    summary: 'Update a subject by ID',
+    description:
+      'Update subject information and/or status. All fields are optional.',
+  })
   @ApiParam({ name: 'id', description: 'Subject ID' })
-  @ApiBody({ type: UpdateSubjectDto })
+  @ApiBody({
+    type: UpdateSubjectDto,
+    examples: {
+      updateName: {
+        summary: 'Update only subject name',
+        value: {
+          subjectName: 'Matemática Avanzada',
+        },
+      },
+      updateDescription: {
+        summary: 'Update only description',
+        value: {
+          subjectDescription:
+            'Matemática avanzada para estudiantes de secundaria',
+        },
+      },
+      updateStatus: {
+        summary: 'Update only status',
+        value: {
+          subjectStatus: false,
+        },
+      },
+      updateAll: {
+        summary: 'Update multiple fields',
+        value: {
+          subjectName: 'Matemática Integral',
+          subjectDescription: 'Matemática con enfoque integral y práctico',
+          subjectStatus: true,
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Subject updated successfully',
@@ -169,11 +204,15 @@ export class SubjectsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a subject by ID' })
+  @ApiOperation({
+    summary: 'Soft delete a subject by ID',
+    description:
+      'Deactivate a subject by setting its status to false (soft delete)',
+  })
   @ApiParam({ name: 'id', description: 'Subject ID' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Subject deleted successfully',
+    description: 'Subject deactivated successfully (soft delete)',
     type: Subject,
   })
   @ApiResponse({
@@ -182,21 +221,5 @@ export class SubjectsController {
   })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Subject> {
     return this.subjectsService.remove(id);
-  }
-
-  @Patch(':id/toggle-status')
-  @ApiOperation({ summary: 'Toggle the status of a subject (active/inactive)' })
-  @ApiParam({ name: 'id', description: 'Subject ID' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Subject status toggled successfully',
-    type: Subject,
-  })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Subject not found',
-  })
-  toggleStatus(@Param('id', ParseIntPipe) id: number): Promise<Subject> {
-    return this.subjectsService.toggleStatus(id);
   }
 }
