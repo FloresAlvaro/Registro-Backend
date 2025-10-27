@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, MaxLength, MinLength } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  MaxLength,
+  MinLength,
+  IsBoolean,
+} from 'class-validator';
 
 export class UpdateGradeDto {
   @ApiProperty({
@@ -27,4 +33,13 @@ export class UpdateGradeDto {
   @MinLength(1)
   @MaxLength(255)
   gradeDescription?: string;
+
+  @ApiProperty({
+    description: 'The status of the grade',
+    example: true,
+    required: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  gradeStatus?: boolean;
 }

@@ -145,9 +145,44 @@ export class GradesController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a grade by ID' })
+  @ApiOperation({
+    summary: 'Update a grade by ID',
+    description:
+      'Update grade information and/or status. All fields are optional.',
+  })
   @ApiParam({ name: 'id', description: 'Grade ID' })
-  @ApiBody({ type: UpdateGradeDto })
+  @ApiBody({
+    type: UpdateGradeDto,
+    examples: {
+      updateLevel: {
+        summary: 'Update only grade level',
+        value: {
+          gradeLevel: '1ro Primaria Avanzada',
+        },
+      },
+      updateDescription: {
+        summary: 'Update only description',
+        value: {
+          gradeDescription:
+            'Primer grado de educación primaria con enfoque integral',
+        },
+      },
+      updateStatus: {
+        summary: 'Update only status',
+        value: {
+          gradeStatus: false,
+        },
+      },
+      updateAll: {
+        summary: 'Update multiple fields',
+        value: {
+          gradeLevel: '1ro Primaria Plus',
+          gradeDescription: 'Primer grado mejorado',
+          gradeStatus: true,
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Grade updated successfully',
@@ -169,11 +204,15 @@ export class GradesController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a grade by ID' })
+  @ApiOperation({
+    summary: 'Soft delete a grade by ID',
+    description:
+      'Deactivate a grade by setting its status to false (soft delete)',
+  })
   @ApiParam({ name: 'id', description: 'Grade ID' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Grade deleted successfully',
+    description: 'Grade deactivated successfully (soft delete)',
     type: Grade,
   })
   @ApiResponse({
@@ -182,21 +221,5 @@ export class GradesController {
   })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Grade> {
     return this.gradesService.remove(id);
-  }
-
-  @Patch(':id/toggle-status')
-  @ApiOperation({ summary: 'Toggle the status of a grade (active/inactive)' })
-  @ApiParam({ name: 'id', description: 'Grade ID' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Grade status toggled successfully',
-    type: Grade,
-  })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Grade not found',
-  })
-  toggleStatus(@Param('id', ParseIntPipe) id: number): Promise<Grade> {
-    return this.gradesService.toggleStatus(id);
   }
 }

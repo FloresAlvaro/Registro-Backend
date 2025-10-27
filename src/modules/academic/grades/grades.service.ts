@@ -55,17 +55,10 @@ export class GradesService {
   async remove(id: number): Promise<Grade> {
     await this.findOne(id); // This will throw NotFoundException if not found
 
-    return this.prisma.grade.delete({
-      where: { gradeId: id },
-    });
-  }
-
-  async toggleStatus(id: number): Promise<Grade> {
-    const grade = await this.findOne(id);
-
+    // Soft delete: set gradeStatus to false instead of physical deletion
     return this.prisma.grade.update({
       where: { gradeId: id },
-      data: { gradeStatus: !grade.gradeStatus },
+      data: { gradeStatus: false },
     });
   }
 }
